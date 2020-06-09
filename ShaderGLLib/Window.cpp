@@ -32,7 +32,7 @@ namespace sgl {
 					SDL_WINDOWPOS_CENTERED,
 					size_.first,
 					size_.second,
-					SDL_WINDOW_OPENGL);
+					SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 				if (!sdl_window_)
 				{
 					ErrorMessageDisplay("Couldn't start a window in SDL2.");
@@ -180,12 +180,10 @@ namespace sgl {
 		{
 			std::pair<int, int> gl_version;
 			// GL context.
-			void* gl_context = SDL_GL_CreateContext(
-				static_cast<SDL_Window*>(window->GetWindowContext()));
 			SDL_GL_SetAttribute(
 				SDL_GL_CONTEXT_PROFILE_MASK,
 				SDL_GL_CONTEXT_PROFILE_CORE);
-			if (!gl_context) return nullptr;
+			// if (!gl_context) return nullptr;
 			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 			SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 			SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
@@ -211,6 +209,9 @@ namespace sgl {
 			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 			// Vsync off.
 			SDL_GL_SetSwapInterval(0);
+
+            void* gl_context = SDL_GL_CreateContext(
+                static_cast<SDL_Window*>(window->GetWindowContext()));
 
 			return gl_context;
 		}
