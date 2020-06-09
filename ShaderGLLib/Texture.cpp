@@ -650,8 +650,9 @@ namespace sgl {
 		texture_manager.AddTexture("Image", in_texture);
 		auto program = CreateProgram("Blur");
 		program->UniformFloat("exponent", exponent);
+        std::vector<std::shared_ptr<Texture>> texture_vec{ out_texture };
 		FillProgramMultiTexture(
-			std::vector<std::shared_ptr<Texture>>{ out_texture }, 
+			texture_vec,
 			texture_manager, 
 			std::vector<std::string>{ "Image" }, 
 			program);

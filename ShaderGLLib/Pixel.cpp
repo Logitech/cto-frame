@@ -21,7 +21,7 @@ namespace sgl {
 		throw 
 			std::runtime_error(
 				"unknown element size : " +	
-				static_cast<int>(pixel_element_size));
+				std::to_string(static_cast<int>(pixel_element_size)));
 	}
 
 	int ConvertToGLType(const PixelStructure pixel_structure)
@@ -39,7 +39,8 @@ namespace sgl {
 		}
 		throw 
 			std::runtime_error(
-				"unknown structure : " + static_cast<int>(pixel_structure));
+				"unknown structure : " +
+                std::to_string(static_cast<int>(pixel_structure)));
 	}
 
 	int ConvertToGLType(

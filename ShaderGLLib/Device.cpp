@@ -463,17 +463,23 @@ namespace sgl {
 		auto monte_carlo_prefilter = std::make_shared<sgl::TextureCubeMap>(
 			std::make_pair<std::uint32_t, std::uint32_t>(128, 128),
 			sgl::PixelElementSize::FLOAT);
-		sgl::FillProgramMultiTextureCubeMapMipmap(
-			std::vector<std::shared_ptr<sgl::Texture>>{ monte_carlo_prefilter },
-			texture_manager_,
-			{ "Environment" },
-			sgl::CreateProgram("MonteCarloPrefilter"),
-			5,
-			[](const int mipmap, const std::shared_ptr<sgl::Program>& program)
-		{
-			float roughness = static_cast<float>(mipmap) / 4.0f;
-			program->UniformFloat("roughness", roughness);
-		});
+        {
+            std::vector<std::shared_ptr<sgl::Texture>> texture_vec{
+                monte_carlo_prefilter };
+            sgl::FillProgramMultiTextureCubeMapMipmap(
+                texture_vec,
+                texture_manager_,
+                { "Environment" },
+                sgl::CreateProgram("MonteCarloPrefilter"),
+                5,
+                [](
+                   const int mipmap,
+                   const std::shared_ptr<sgl::Program>& program)
+            {
+                float roughness = static_cast<float>(mipmap) / 4.0f;
+                program->UniformFloat("roughness", roughness);
+            });
+        }
 		texture_manager_.AddTexture(
 			"MonteCarloPrefilter", 
 			monte_carlo_prefilter);
@@ -482,22 +488,30 @@ namespace sgl {
 		auto irradiance = std::make_shared<sgl::TextureCubeMap>(
 			std::make_pair<std::uint32_t, std::uint32_t>(32, 32),
 			pixel_element_size_);
-		sgl::FillProgramMultiTextureCubeMap(
-			std::vector<std::shared_ptr<sgl::Texture>>{ irradiance },
-			texture_manager_,
-			{ "Environment" },
-			sgl::CreateProgram("IrradianceCubeMap"));
+        {
+            std::vector<std::shared_ptr<sgl::Texture>> texture_vec{
+                irradiance };
+            sgl::FillProgramMultiTextureCubeMap(
+                texture_vec,
+                texture_manager_,
+                { "Environment" },
+                sgl::CreateProgram("IrradianceCubeMap"));
+        }
 		texture_manager_.AddTexture("Irradiance", irradiance);
 
 		// Create the LUT BRDF.
 		auto integrate_brdf = std::make_shared<sgl::Texture>(
 			std::make_pair<std::uint32_t, std::uint32_t>(512, 512),
 			pixel_element_size_);
-		sgl::FillProgramMultiTexture(
-			std::vector<std::shared_ptr<sgl::Texture>>{ integrate_brdf },
-			texture_manager_,
-			{},
-			sgl::CreateProgram("IntegrateBRDF"));
+        {
+            std::vector<std::shared_ptr<sgl::Texture>> texture_vec{
+                integrate_brdf };
+            sgl::FillProgramMultiTexture(
+                texture_vec,
+                texture_manager_,
+                {},
+                sgl::CreateProgram("IntegrateBRDF"));
+        }
 		texture_manager_.AddTexture("IntegrateBRDF", integrate_brdf);
 	}
 
@@ -567,8 +581,10 @@ namespace sgl {
 			throw std::runtime_error(
 				"Error cannot open file: " + mtl_file);
 		}
+        std::istringstream iss(obj_content);
+        std::istream& is = iss;
 		scene_tree_ = LoadSceneFromObjStream(
-			std::istringstream(obj_content),
+			is,
 			pbr_program_,
 			obj_file);
 		materials_ = LoadMaterialFromMtlStream(mtl_ifs, mtl_file);

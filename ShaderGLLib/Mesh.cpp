@@ -316,7 +316,8 @@ namespace sgl {
 								return;
 						}
 						throw std::runtime_error(
-							"Invalid index should be (0 - 2) is: " + index);
+							"Invalid index should be (0 - 2) is: " +
+                            std::to_string(index));
 					};
 					for (int i = 0; i < 3; ++i)
 					{

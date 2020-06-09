@@ -59,7 +59,7 @@ namespace sgl {
 			throw 
 				std::runtime_error(
 					"unsupported element size : " +
-					static_cast<int>(pixel_element_size_));
+					std::to_string(static_cast<int>(pixel_element_size_)));
 		}
 		if (!image_)
 		{

@@ -209,11 +209,11 @@ namespace sgl {
 			[&material_map, &mtl_part, &name_extended, &mtl_name]()
 		{
 			assert(!mtl_name.empty());
+            std::istringstream iss(mtl_part);
+            std::istream& is = iss;
 			material_map.emplace(
 				mtl_name,
-				std::make_shared<Material>(
-					std::istringstream(mtl_part),
-					name_extended));
+				std::make_shared<Material>(is, name_extended));
 			mtl_part.clear();
 		};
 		while (!is.eof())
