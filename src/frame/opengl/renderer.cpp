@@ -213,6 +213,7 @@ void Renderer::RenderMesh(StaticMeshInterface& static_mesh, MaterialInterface& m
 }
 
 void Renderer::Display(double dt /* = 0.0*/) {
+    glViewport(viewport_.x, viewport_.y, viewport_.z, viewport_.w);
     auto maybe_quad_id = level_.GetDefaultStaticMeshQuadId();
     if (maybe_quad_id == NullId) throw std::runtime_error("No quad id.");
     auto& quad    = level_.GetStaticMeshFromId(maybe_quad_id);
@@ -270,7 +271,7 @@ void Renderer::RenderAllMeshes(const glm::mat4& projection, const glm::mat4& vie
                 assert(!ids.empty());
                 auto& texture = level_.GetTextureFromId(ids[0]);
                 auto size     = texture.GetSize();
-                viewport_ = glm::ivec4(0, 0, size.x / 2, size.y / 2);
+                viewport_     = glm::ivec4(0, 0, size.x / 2, size.y / 2);
                 for (std::uint32_t i = 0; i < 6; ++i) {
                     SetCubeMapTarget(GetTextureFrameFromPosition(i));
                     RenderNode(p.first, material_id, projection_cubemap, views_cubemap[i], dt);

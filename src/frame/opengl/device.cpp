@@ -137,13 +137,14 @@ void Device::Display(double dt /*= 0.0*/) {
     Clear();
     // Get the holder of the camera.
     auto camera_holder_id = level_->GetDefaultCameraId();
-    auto enum_type = level_->GetEnumTypeFromId(camera_holder_id);
-    auto& node = level_->GetSceneNodeFromId(camera_holder_id);
-    auto matrix_node = node.GetLocalModel(dt);
-    auto inverse_model = glm::inverse(matrix_node);
+    auto enum_type        = level_->GetEnumTypeFromId(camera_holder_id);
+    auto& node            = level_->GetSceneNodeFromId(camera_holder_id);
+    auto matrix_node      = node.GetLocalModel(dt);
+    auto inverse_model    = glm::inverse(matrix_node);
     Camera default_camera = level_->GetDefaultCamera();
     default_camera.SetFront(default_camera.GetFront() * glm::mat3(inverse_model));
-    default_camera.SetPosition(glm::vec3(glm::vec4(default_camera.GetPosition(), 1.0) * inverse_model));
+    default_camera.SetPosition(
+        glm::vec3(glm::vec4(default_camera.GetPosition(), 1.0) * inverse_model));
     // Compute left and right cameras.
     Camera left_camera = default_camera;
     left_camera.SetPosition(left_camera.GetPosition() -
@@ -228,7 +229,10 @@ std::unique_ptr<frame::TextureInterface> Device::CreateTexture(
 void Device::Resize(glm::uvec2 size) {
     Cleanup();
     size_ = size;
-    Startup(std::move(level_));
+
+    if (level_) {
+        Startup(std::move(level_));
+    }
 }
 
 void Device::SetStereo(StereoEnum stereo_enum, float interocular_distance, glm::vec3 focus_point,

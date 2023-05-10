@@ -37,11 +37,12 @@ class SDLOpenGLWindow : public WindowInterface {
     void SetWindowTitle(const std::string& title) const override {
         SDL_SetWindowTitle(sdl_window_, title.c_str());
     }
+    virtual void SetWindowFlag(WindowFlagEnum flag) override;
 
    public:
     void Run(std::function<void()> lambda) override;
     void* GetGraphicContext() const override;
-    void Resize(glm::uvec2 size, FullScreenEnum fullscreen_enum) override;
+    void Resize(glm::uvec2 size, FullScreenEnum fullscreen_enum, ResizePolicyEnum policy) override;
     FullScreenEnum GetFullScreenEnum() const override;
     glm::vec2 GetPixelPerInch(std::uint32_t screen = 0) const override;
 

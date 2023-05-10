@@ -36,24 +36,25 @@ class SDLOpenGLNone : public WindowInterface {
     DeviceInterface& GetDevice() override { return *device_.get(); }
     DrawingTargetEnum GetDrawingTargetEnum() const { return DrawingTargetEnum::NONE; }
     glm::uvec2 GetSize() const override { return size_; }
-    glm::uvec2 GetDesktopSize() const override { return {0, 0}; }
+    glm::uvec2 GetDesktopSize() const override { return { 0, 0 }; }
     void* GetWindowContext() const override { return sdl_window_; }
     void SetWindowTitle(const std::string& title) const override {}
-    void Resize(glm::uvec2 size, FullScreenEnum fullscreen_enum) override {
-		size_ = size;
+    virtual void SetWindowFlag(WindowFlagEnum flag) override {}
+    void Resize(glm::uvec2 size, FullScreenEnum fullscreen_enum, ResizePolicyEnum policy) override {
+        size_ = size;
         device_->Resize(size);
     }
     FullScreenEnum GetFullScreenEnum() const override { return FullScreenEnum::WINDOW; }
     glm::vec2 GetPixelPerInch(std::uint32_t screen = 0) const override {
         throw std::runtime_error("This is a none device so no screen.");
     }
-	
+
    private:
     glm::uvec2 size_;
     std::unique_ptr<DeviceInterface> device_         = nullptr;
     std::unique_ptr<InputInterface> input_interface_ = nullptr;
     SDL_Window* sdl_window_                          = nullptr;
-    frame::Logger& logger_ = frame::Logger::GetInstance();
+    frame::Logger& logger_                           = frame::Logger::GetInstance();
 };
 
 }  // namespace frame::opengl

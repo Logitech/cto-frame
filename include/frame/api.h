@@ -9,9 +9,9 @@ namespace frame {
 enum class RenderingAPIEnum {
     OPENGL,
     VULKAN,
-	// From: https://sourceforge.net/p/predef/wiki/OperatingSystems/
+// From: https://sourceforge.net/p/predef/wiki/OperatingSystems/
 #if defined(_WIN32) || defined(_WIN64)
-	DIRECTX11,
+    DIRECTX11,
     DIRECTX12,
 #endif
 };
@@ -20,19 +20,40 @@ enum class RenderingAPIEnum {
  * @class DrawingTargetEnum
  * @brief Where do you want to draw?
  */
-enum class DrawingTargetEnum {
-	NONE,
-	WINDOW
-};
+enum class DrawingTargetEnum { NONE, WINDOW };
 
 /**
  * @class FullScreenEnum
  * @brief List of full screen mode.
  */
 enum class FullScreenEnum {
-	WINDOW,
-	FULLSCREEN,
+    WINDOW,
+    FULLSCREEN,
     FULLSCREEN_DESKTOP,
+};
+
+/**
+ * @class WindowFlagEnum
+ * @brief List of window flags.
+ */
+enum class WindowFlagEnum {
+    MAXIMIZE,
+    MINIMIZE,
+    RESTORE,
+    CENTER,
+    ENABLE_BORDER,
+    DISABLE_BORDER,
+};
+
+/**
+ * @class ResizePolicyEnum
+ * @brief List of resize policy / behaviour.
+ */
+enum class ResizePolicyEnum {
+    //! The top left corner will not move (default in SDL).
+    FROM_TOP_LEFT,
+    //! The window will be expanded or shrunk in all directions (the center won't move).
+    FROM_CENTER
 };
 
 /**
@@ -41,13 +62,13 @@ enum class FullScreenEnum {
  */
 enum class StereoEnum {
     //! No stereo.
-	NONE,
-	//! Anaglyph used by colored glasses.
+    NONE,
+    //! Anaglyph used by colored glasses.
     ANAGLYPH,
     //! Split, single image wrapped to fit in the image size.
     HORIZONTAL_SPLIT,
-	//! Side by side keep the image aspect ratio and put one image side-by-side.
-	HORIZONTAL_SIDE_BY_SIDE,
+    //! Side by side keep the image aspect ratio and put one image side-by-side.
+    HORIZONTAL_SIDE_BY_SIDE,
 };
 
 /**

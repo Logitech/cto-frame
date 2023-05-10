@@ -26,9 +26,9 @@ class Win32OpenGLNone : public WindowInterface {
     void SetInputInterface(std::unique_ptr<InputInterface>&& input_interface) override {
         input_interface_ = std::move(input_interface);
     }
-	void AddKeyCallback(std::int32_t key, std::function<bool()> func) override {
-		throw std::runtime_error("Not implemented.");
-	}
+    void AddKeyCallback(std::int32_t key, std::function<bool()> func) override {
+        throw std::runtime_error("Not implemented.");
+    }
     void SetUniqueDevice(std::unique_ptr<DeviceInterface>&& device) override {
         device_ = std::move(device);
     }
@@ -37,7 +37,8 @@ class Win32OpenGLNone : public WindowInterface {
     glm::uvec2 GetDesktopSize() const override { return { 0, 0 }; }
     void* GetWindowContext() const override { return nullptr; }
     void SetWindowTitle(const std::string& title) const override {}
-    void Resize(glm::uvec2 size, FullScreenEnum fullscreen_enum) {
+    virtual void SetWindowFlag(WindowFlagEnum flag) override {}
+    void Resize(glm::uvec2 size, FullScreenEnum fullscreen_enum, ResizePolicyEnum policy) {
         size_ = size;
         device_->Resize(size);
     }

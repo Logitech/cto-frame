@@ -20,17 +20,17 @@ struct WindowInterface {
     //! Virtual destructor.
     virtual ~WindowInterface() = default;
     //! @brief Run the windows interface this will take the current thread.
-    virtual void Run(std::function<void()> lambda = []{}) = 0;
+    virtual void Run(std::function<void()> lambda = [] {}) = 0;
     /**
      * @brief Set the input interface (see above).
      * @param input_interface: Move a input interface to the window object.
      */
     virtual void SetInputInterface(std::unique_ptr<InputInterface>&& input_interface) = 0;
-	/**
-	 * @brief Add a callback for a key.
+    /**
+     * @brief Add a callback for a key.
      * @param key: The key to add a callback for.
-	 * @param func: The callback function to be called in case the key is pressed.
-	 */
+     * @param func: The callback function to be called in case the key is pressed.
+     */
     virtual void AddKeyCallback(std::int32_t key, std::function<bool()> func) = 0;
     /**
      * @brief Set the unique device (this is suppose to be variable to the one you are using see :
@@ -76,12 +76,19 @@ struct WindowInterface {
      */
     virtual void SetWindowTitle(const std::string& title) const = 0;
     /**
+     * @brief Set a specific flag to the window to modify its behaviour.
+     *
+     * @param flag: The flag to set / behaviour to modify.
+     */
+    virtual void SetWindowFlag(WindowFlagEnum flag) = 0;
+    /**
      * @brief Resize the window.
      * @param fullscreen_enum: Is it full screen or not?
      * @param size: The new window size.
+     * @param policy: The resize policy.
      */
-    virtual void Resize(glm::uvec2 size,
-                        FullScreenEnum fullscreen_enum = FullScreenEnum::WINDOW) = 0;
+    virtual void Resize(glm::uvec2 size, FullScreenEnum fullscreen_enum = FullScreenEnum::WINDOW,
+                        ResizePolicyEnum policy = ResizePolicyEnum::FROM_TOP_LEFT) = 0;
     /**
      * @brief Get window full screen enum.
      * @return The full screen enum.

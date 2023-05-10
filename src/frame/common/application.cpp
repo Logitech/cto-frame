@@ -33,9 +33,9 @@ void Application::Startup(std::unique_ptr<frame::LevelInterface>&& level) {
     device.AddPlugin(std::move(plugin));
 }
 
-void Application::Resize(glm::uvec2 size, FullScreenEnum fullscreen_enum) {
+void Application::Resize(glm::uvec2 size, FullScreenEnum fullscreen_enum, ResizePolicyEnum policy) {
     assert(window_);
-    window_->Resize(size, fullscreen_enum);
+    window_->Resize(size, fullscreen_enum, policy);
 }
 
 void Application::Run(std::function<void()> lambda) {

@@ -90,7 +90,6 @@ void SDLOpenGLWindow::Run(std::function<void()> lambda) {
             }
         }
 
-        SetWindowTitle("SDL OpenGL - " + std::to_string(static_cast<float>(GetFPS(dt))));
         previous_count = time.count();
         lambda();
 
@@ -228,14 +227,37 @@ void* SDLOpenGLWindow::GetGraphicContext() const {
     return gl_context;
 }
 
-void SDLOpenGLWindow::Resize(glm::uvec2 size, FullScreenEnum fullscreen_enum) {
+void SDLOpenGLWindow::SetWindowFlag(WindowFlagEnum flag) {
+    switch (flag) {
+        case WindowFlagEnum::MAXIMIZE:
+            SDL_MaximizeWindow(sdl_window_);
+            break;
+        case WindowFlagEnum::MINIMIZE:
+            SDL_MinimizeWindow(sdl_window_);
+            break;
+        case WindowFlagEnum::RESTORE:
+            SDL_RestoreWindow(sdl_window_);
+            break;
+        case WindowFlagEnum::CENTER:
+            SDL_SetWindowPosition(sdl_window_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+            break;
+        case WindowFlagEnum::ENABLE_BORDER:
+            SDL_SetWindowBordered(sdl_window_, SDL_TRUE);
+            break;
+        case WindowFlagEnum::DISABLE_BORDER:
+            SDL_SetWindowBordered(sdl_window_, SDL_FALSE);
+            break;
+        default:
+            throw std::runtime_error("Unknown window flag.");
+    }
+}
+
+void SDLOpenGLWindow::Resize(glm::uvec2 size, FullScreenEnum fullscreen_enum,
+                             ResizePolicyEnum policy) {
     size_ = size;
     if (fullscreen_enum_ != fullscreen_enum) {
         fullscreen_enum_      = fullscreen_enum;
         SDL_WindowFlags flags = static_cast<SDL_WindowFlags>(0);
-        if (fullscreen_enum_ == FullScreenEnum::WINDOW) {
-            flags = static_cast<SDL_WindowFlags>(0);
-        }
         if (fullscreen_enum_ == FullScreenEnum::FULLSCREEN) {
             flags = SDL_WindowFlags::SDL_WINDOW_FULLSCREEN;
         }
@@ -247,10 +269,29 @@ void SDLOpenGLWindow::Resize(glm::uvec2 size, FullScreenEnum fullscreen_enum) {
             throw std::runtime_error(
                 fmt::format("Error switching to fullscreen mode: {}", SDL_GetError()));
         }
-        // Only resize when changing window mode.
-        SDL_SetWindowSize(sdl_window_, size_.x, size_.y);
     }
-    device_->Resize(size_);
+
+    // Resize the window using the selected policy.
+    switch (policy) {
+        // Move the window half of the difference between the old and new size to keep its
+        // center constant.
+        case ResizePolicyEnum::FROM_CENTER: {
+            int pos_x, pos_y;
+            SDL_GetWindowPosition(sdl_window_, &pos_x, &pos_y);
+            pos_x = pos_x + (static_cast<int>(size_.x) - static_cast<int>(size.x)) / 2;
+            pos_y = pos_y + (static_cast<int>(size_.y) - static_cast<int>(size.y)) / 2;
+            SDL_SetWindowSize(sdl_window_, size.x, size.y);
+            SDL_SetWindowPosition(sdl_window_, pos_x, pos_y);
+            break;
+        }
+        // From top left is the default in SDL.
+        default:
+            SDL_SetWindowSize(sdl_window_, size.x, size.y);
+            break;
+    }
+
+    device_->Resize(size);
+    size_ = size;
 }
 
 frame::FullScreenEnum SDLOpenGLWindow::GetFullScreenEnum() const { return fullscreen_enum_; }

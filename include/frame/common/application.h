@@ -32,13 +32,15 @@ class Application {
     /**
      * @brief A helper function that call the inner resize of the window.
      * @param size: The new size of the window.
-	 * @param fullscreen_enum: The new full screen state of the window.
+     * @param fullscreen_enum: The new full screen state of the window.
+     * @param policy: The resize policy.
      */
-    void Resize(glm::uvec2 size, FullScreenEnum fullscreen_enum);
+    void Resize(glm::uvec2 size, FullScreenEnum fullscreen_enum,
+                ResizePolicyEnum policy = ResizePolicyEnum::FROM_TOP_LEFT);
     /**
      * @brief Run the application.
      */
-    void Run(std::function<void()> lambda = []{});
+    void Run(std::function<void()> lambda = [] {});
 
    protected:
     std::unique_ptr<frame::WindowInterface> window_ = nullptr;

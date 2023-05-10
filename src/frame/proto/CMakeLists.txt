@@ -2,25 +2,19 @@
 
 add_library(FrameProto
   STATIC
-    level.proto
-    material.proto
-    math.proto
-    pixel.proto
-    plugin.proto
-    program.proto
-    scene.proto
-    size.proto
-    texture.proto
-    uniform.proto
+  level.proto
+  material.proto
+  math.proto
+  pixel.proto
+  plugin.proto
+  program.proto
+  scene.proto
+  size.proto
+  texture.proto
+  uniform.proto
 )
 
 protobuf_generate(TARGET FrameProto LANGUAGE cpp)
-
-target_link_libraries(FrameProto
-  PRIVATE
-    protobuf::libprotoc
-    protobuf::libprotobuf
-)
 
 set(HEADERS_TO_BE_COPIED
   level.pb.h
@@ -40,10 +34,15 @@ foreach(HEADERN ${HEADERS_TO_BE_COPIED})
     TARGET FrameProto
     POST_BUILD
     COMMAND
-      ${CMAKE_COMMAND} -E copy_if_different
-      ${CMAKE_BINARY_DIR}/src/frame/proto/${HEADERN}
-      ${CMAKE_SOURCE_DIR}/include/frame/proto
+    ${CMAKE_COMMAND} -E copy_if_different
+    ${CMAKE_BINARY_DIR}/src/frame/proto/${HEADERN}
+    ${CMAKE_SOURCE_DIR}/include/frame/proto
   )
 endforeach(HEADERN)
 
-set_property(TARGET FrameProto PROPERTY FOLDER "Frame")
+target_link_libraries(FrameProto
+  PUBLIC
+  protobuf::libprotobuf
+)
+
+set_property(TARGET FrameProto PROPERTY FOLDER "Frame/Proto")
