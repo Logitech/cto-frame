@@ -4,6 +4,7 @@
 #include <optional>
 
 #include "frame/json/proto.h"
+#include "frame/level.h"
 #include "frame/texture_interface.h"
 
 namespace frame::proto {
@@ -40,9 +41,10 @@ std::unique_ptr<TextureInterface> ParseCubeMapTextureFile(const proto::Texture& 
  * @brief Parse a basic texture from a proto and a size.
  * @param proto_texture: proto for the texture.
  * @param size: Size of the basic screen (in case you use relative size).
+ * @param level: Output level that contains the texture loaded until now.
  * @return A unique pointer to a texture interface.
  */
 std::unique_ptr<TextureInterface> ParseBasicTexture(const proto::Texture& proto_texture,
-                                                    glm::uvec2 size);
+                                                    glm::uvec2 size, frame::Level& level);
 
 }  // End namespace frame::proto.

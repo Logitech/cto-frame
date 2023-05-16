@@ -15,11 +15,10 @@ void main()
     vec3 diffuseColor = texture(Color, fragTexCoord).rgb;
 
     // Sample the irradiance map.
-    // Why do I have to invert the normal?
-    vec3 irradiance = texture(IrradianceMap, -fragNormal).rgb;
+    vec3 irradiance = texture(IrradianceMap, fragNormal).rgb;
 
     // Multiply the diffuse color with the irradiance color.
-    vec3 mixedColor = mix(irradiance, diffuseColor.rgb, 0.75);
+    vec3 mixedColor = mix(irradiance, diffuseColor.rgb, 0.0001);
 
     // Output the mixed color.
     fragColor = vec4(mixedColor, 1.0);

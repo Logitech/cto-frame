@@ -19,18 +19,18 @@ namespace frame::opengl {
 namespace {
 // Get the 6 view for the cube map.
 const std::array<glm::mat4, 6> views_cubemap = {
-    glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f),
-                glm::vec3(0.0f, 1.0f, 0.0f)),
     glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f),
-                glm::vec3(0.0f, 1.0f, 0.0f)),
-    glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f),
-                glm::vec3(0.0f, 0.0f, 1.0f)),
+                glm::vec3(0.0f, -1.0f, 0.0f)),
+    glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f),
+                glm::vec3(0.0f, -1.0f, 0.0f)),
     glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f),
+                glm::vec3(0.0f, 0.0f, 1.0f)),
+    glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f),
                 glm::vec3(0.0f, 0.0f, -1.0f)),
     glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f),
-                glm::vec3(0.0f, 1.0f, 0.0f)),
+                glm::vec3(0.0f, -1.0f, 0.0f)),
     glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f),
-                glm::vec3(0.0f, 1.0f, 0.0f))
+                glm::vec3(0.0f, -1.0f, 0.0f))
 };
 // Projection cube map.
 const glm::mat4 projection_cubemap = glm::perspective(glm::radians(90.0f), 1.0f, 0.01f, 10.0f);
@@ -93,6 +93,11 @@ void Renderer::RenderNode(EntityId node_id, EntityId material_id, const glm::mat
 void Renderer::RenderMesh(StaticMeshInterface& static_mesh, MaterialInterface& material,
                           const glm::mat4& projection, const glm::mat4& view,
                           const glm::mat4& model /* = glm::mat4(1.0f)*/, double dt /* = 0.0*/) {
+    ScopedBind scoped_frame(frame_buffer_);
+    if (static_mesh.IsClearBuffer()) {
+        glClear(GL_DEPTH_BUFFER_BIT);
+    }
+
     auto program_id  = material.GetProgramId();
     auto& program    = level_.GetProgramFromId(program_id);
     last_program_id_ = program_id;
@@ -110,7 +115,6 @@ void Renderer::RenderMesh(StaticMeshInterface& static_mesh, MaterialInterface& m
 
     glViewport(viewport_.x, viewport_.y, viewport_.z, viewport_.w);
 
-    ScopedBind scoped_frame(frame_buffer_);
     int i = 0;
     for (const auto& texture_id : program.GetOutputTextureIds()) {
         if (level_.GetTextureFromId(texture_id).IsCubeMap()) {
@@ -206,10 +210,13 @@ void Renderer::RenderMesh(StaticMeshInterface& static_mesh, MaterialInterface& m
         }
     }
     material.DisableAll();
+}
 
-    if (static_mesh.IsClearBuffer()) {
-        glClear(GL_DEPTH_BUFFER_BIT);
-    }
+void Renderer::FakeMesh(StaticMeshInterface& static_mesh, MaterialInterface& material,
+                        const glm::mat4& projection, const glm::mat4& view,
+                        const glm::mat4& model /* = glm::mat4(1.0f)*/, double dt /* = 0.0*/) {
+    // frame_buffer_.Bind(0);
+    // glClear(GL_DEPTH_BUFFER_BIT);
 }
 
 void Renderer::Display(double dt /* = 0.0*/) {
@@ -277,8 +284,8 @@ void Renderer::RenderAllMeshes(const glm::mat4& projection, const glm::mat4& vie
                     RenderNode(p.first, material_id, projection_cubemap, views_cubemap[i], dt);
                 }
                 // Again why?
-                SetCubeMapTarget(GetTextureFrameFromPosition(0));
-                RenderNode(p.first, material_id, projection_cubemap, views_cubemap[0], dt);
+                // SetCubeMapTarget(GetTextureFrameFromPosition(0));
+                // RenderNode(p.first, material_id, projection_cubemap, views_cubemap[0], dt);
             }
             viewport_ = temp_viewport;
         } else {

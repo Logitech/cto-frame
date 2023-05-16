@@ -22,24 +22,18 @@ namespace frame::opengl::file {
 namespace {
 // Get the 6 view for the cube map.
 const std::array<glm::mat4, 6> views_cubemap = {
-    glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f),
-                glm::vec3(-1.0f, 0.0f, 0.0f),
-                glm::vec3(0.0f, 1.0f, 0.0f)),
-    glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f),
-                glm::vec3(1.0f, 0.0f, 0.0f),
-                glm::vec3(0.0f, 1.0f, 0.0f)),
-    glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f),
-                glm::vec3(0.0f, -1.0f, 0.0f),
+    glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f),
+                glm::vec3(0.0f, -1.0f, 0.0f)),
+    glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f),
+                glm::vec3(0.0f, -1.0f, 0.0f)),
+    glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f),
                 glm::vec3(0.0f, 0.0f, 1.0f)),
-    glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f),
-                glm::vec3(0.0f, 1.0f, 0.0f),
+    glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f),
                 glm::vec3(0.0f, 0.0f, -1.0f)),
-    glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f),
-                glm::vec3(0.0f, 0.0f, 1.0f),
-                glm::vec3(0.0f, 1.0f, 0.0f)),
-    glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f),
-                glm::vec3(0.0f, 0.0f, -1.0f),
-                glm::vec3(0.0f, 1.0f, 0.0f))
+    glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f),
+                glm::vec3(0.0f, -1.0f, 0.0f)),
+    glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f),
+                glm::vec3(0.0f, -1.0f, 0.0f))
 };
 // Projection cube map.
 const glm::mat4 projection_cubemap = glm::perspective(glm::radians(90.0f), 1.0f, 0.01f, 10.0f);
@@ -122,18 +116,21 @@ std::unique_ptr<frame::TextureInterface> LoadCubeMapTextureFromFile(
     }
     auto& out_texture_ref = level->GetTextureFromId(out_texture_id);
     Renderer renderer(*level.get(), { 0, 0, cube_pair_res.x, cube_pair_res.y });
-    auto& mesh_ref = level->GetStaticMeshFromId(level->GetDefaultStaticMeshCubeId());
+    auto& mesh_ref   = level->GetStaticMeshFromId(level->GetDefaultStaticMeshCubeId());
     auto material_id = level->GetIdFromName("EquirectangularMaterial");
     if (!material_id)
         throw std::runtime_error("No material id found for [EquirectangularMaterial].");
     MaterialInterface& material_ref = level->GetMaterialFromId(material_id);
+
+    renderer.FakeMesh(mesh_ref, material_ref, projection_cubemap, views_cubemap[0]);
     for (std::uint32_t i = 0; i < 6; ++i) {
         renderer.SetCubeMapTarget(GetTextureFrameFromPosition(i));
         renderer.RenderMesh(mesh_ref, material_ref, projection_cubemap, views_cubemap[i]);
     }
+
     // FIXME(anirul): Why?
-    renderer.SetCubeMapTarget(GetTextureFrameFromPosition(0));
-    renderer.RenderMesh(mesh_ref, material_ref, projection_cubemap, views_cubemap[0]);
+    // renderer.SetCubeMapTarget(GetTextureFrameFromPosition(0));
+    // renderer.RenderMesh(mesh_ref, material_ref, projection_cubemap, views_cubemap[0]);
     // Get the output image (cube map).
     auto maybe_output_id = level->GetIdFromName("OutputTexture");
     if (!maybe_output_id) return nullptr;
@@ -155,7 +152,7 @@ std::unique_ptr<frame::TextureInterface> LoadCubeMapTextureFromFiles(
     texture_parameter.map_type         = TextureTypeEnum::CUBMAP;
     for (int i = 0; i < pointers.size(); ++i) {
         images[i] = std::make_unique<frame::file::Image>(final_files[i], pixel_element_size,
-                                                         pixel_structure);
+                                                         pixel_structure, false);
         texture_parameter.array_data_ptr[i] = images[i]->Data();
     }
     texture_parameter.size = images[0]->GetSize();

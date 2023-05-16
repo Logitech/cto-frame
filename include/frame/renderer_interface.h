@@ -51,6 +51,10 @@ struct RendererInterface {
     virtual void RenderMesh(StaticMeshInterface& static_mesh, MaterialInterface& material,
                             const glm::mat4& projection, const glm::mat4& view = glm::mat4(1.0f),
                             const glm::mat4& model_mat = glm::mat4(1.0f), double dt = 0.0) = 0;
+
+    virtual void FakeMesh(StaticMeshInterface& static_mesh, MaterialInterface& material,
+                          const glm::mat4& projection, const glm::mat4& view,
+                          const glm::mat4& model = glm::mat4(1.0f), double dt = 0.0) {}
     /**
      * @brief Render a node given an id and the id of a material at dt time.
      * @param node_id: Node to be rendered.

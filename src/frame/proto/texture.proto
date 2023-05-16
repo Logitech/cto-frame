@@ -66,32 +66,35 @@ message Texture {
 	// Should it be a cleared texture?
 	bool clear_z = 3;
 	bool clear_color = 16;
-    
+
 	// Should we use mipmap?
 	bool mipmap = 4;
 	// Should it be a cubemap?
 	bool cubemap = 5;
 
+	// Name of the associated irradiance texture.
+	string irradiance = 6;
+
 	// Format of the texture.
-	PixelElementSize pixel_element_size = 6;
-	PixelStructure pixel_structure = 7;
+	PixelElementSize pixel_element_size = 7;
+	PixelStructure pixel_structure = 8;
 
 	// Filter for mirroring and texture sampling.
-	TextureFilter min_filter = 8;
-	TextureFilter mag_filter = 9;
-	TextureFilter wrap_s = 10;
-	TextureFilter wrap_t = 11;
+	TextureFilter min_filter = 9;
+	TextureFilter mag_filter = 10;
+	TextureFilter wrap_s = 11;
+	TextureFilter wrap_t = 12;
 	// Reserved for wrap_r in case we want to use 3D textures.
-	reserved 12;
+	reserved 13;
 
     oneof texture_oneof {
 		// Pixel (if provided) not sure this is working.
-		bytes pixels = 13;
+		bytes pixels = 14;
 		// Load from a file.
-		string file_name = 14;
+		string file_name = 15;
 		// Load from a stream.
 		Plugin plugin = 17;
 		// Load from files, this is suppose to represent the 6 face of a cube map.
-		CubeMapFiles file_names = 15;
+		CubeMapFiles file_names = 18;
     }
 }

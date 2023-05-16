@@ -177,19 +177,19 @@ std::unique_ptr<frame::TextureInterface> Level::ExtractTexture(EntityId id) {
     auto node_name    = id_name_map_.extract(id);
     auto node_id      = name_id_map_.extract(node_name.mapped());
     auto node_enum    = id_enum_map_.extract(id);
+    string_set_.extract(node_name.mapped());
     return std::move(node_texture.mapped());
 }
 
 frame::Camera& Level::GetDefaultCamera() {
-    auto camera_id      = GetDefaultCameraId();
+    auto camera_id = GetDefaultCameraId();
     assert(camera_id);
     auto& node_interface = GetSceneNodeFromId(camera_id);
-    auto& node_camera = dynamic_cast<NodeCamera&>(node_interface);
+    auto& node_camera    = dynamic_cast<NodeCamera&>(node_interface);
     return node_camera.GetCamera();
 }
 
-void Level::ReplaceTexture(std::vector<std::uint8_t>&& vector,
-                           glm::uvec2 size,
+void Level::ReplaceTexture(std::vector<std::uint8_t>&& vector, glm::uvec2 size,
                            std::uint8_t bytes_per_pixel, EntityId id) {
     if (!id_texture_map_.count(id))
         throw std::runtime_error("trying to replace {} but no texture there yet?");

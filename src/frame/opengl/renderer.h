@@ -75,6 +75,10 @@ class Renderer : public RendererInterface {
     void RenderMesh(StaticMeshInterface& static_mesh, MaterialInterface& material,
                     const glm::mat4& projection, const glm::mat4& view = glm::mat4(1.0f),
                     const glm::mat4& model = glm::mat4(1.0f), double dt = 0.0) override;
+
+    void FakeMesh(StaticMeshInterface& static_mesh, MaterialInterface& material,
+                  const glm::mat4& projection, const glm::mat4& view = glm::mat4(1.0f),
+                  const glm::mat4& model = glm::mat4(1.0f), double dt = 0.0) override;
     /**
      * @brief Render a node given an id and the id of a material at dt time.
      * @param node_id: Node to be rendered.
@@ -120,7 +124,7 @@ class Renderer : public RendererInterface {
     EntityId display_material_id_ = 0;
     // Texture frame (used in render mesh).
     frame::proto::TextureFrame texture_frame_;
-	bool first_render_ = true;
+    bool first_render_ = true;
     // The render callback it will be called once per mesh.
     RenderCallback callback_ = [](UniformInterface&, StaticMeshInterface&, MaterialInterface&) {};
 };

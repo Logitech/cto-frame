@@ -15,10 +15,12 @@ namespace frame::proto {
 
 namespace {
 
+struct PreRenderInfos {};
+
 std::unique_ptr<LevelInterface> LevelProto(glm::uvec2 size, const proto::Level& proto_level) {
     // TODO(anirul): Check we are in OPENGL mode?
-    auto logger      = Logger::GetInstance();
-    auto level       = std::make_unique<frame::Level>();
+    auto logger = Logger::GetInstance();
+    auto level  = std::make_unique<frame::Level>();
     level->SetName(proto_level.name());
     level->SetDefaultTextureName(proto_level.default_texture_name());
 
@@ -32,7 +34,7 @@ std::unique_ptr<LevelInterface> LevelProto(glm::uvec2 size, const proto::Level& 
 
     // Load textures from proto.
     for (const auto& proto_texture : proto_level.textures()) {
-        std::unique_ptr<TextureInterface> texture = ParseBasicTexture(proto_texture, size);
+        std::unique_ptr<TextureInterface> texture = ParseBasicTexture(proto_texture, size, *level);
         EntityId stream_id                        = NullId;
         EntityId texture_id                       = NullId;
         std::string texture_name                  = proto_texture.name();

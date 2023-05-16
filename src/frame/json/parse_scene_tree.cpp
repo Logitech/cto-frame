@@ -84,9 +84,8 @@ std::function<NodeInterface*(const std::string& name)> GetFunctor(LevelInterface
     }
     auto maybe_material_id = level.GetIdFromName(proto_scene_static_mesh.material_name());
     if (!maybe_material_id) {
-        throw std::runtime_error(
-            fmt::format("Couldn't find any material for this mesh: [{}].",
-                level.GetStaticMeshFromId(mesh_id).GetName()));
+        throw std::runtime_error(fmt::format("Couldn't find any material for this mesh: [{}].",
+                                             level.GetStaticMeshFromId(mesh_id).GetName()));
     }
     const EntityId material_id = maybe_material_id;
     auto& mesh                 = level.GetStaticMeshFromId(mesh_id);
@@ -95,7 +94,7 @@ std::function<NodeInterface*(const std::string& name)> GetFunctor(LevelInterface
         std::make_unique<NodeStaticMesh>(GetFunctor(level), mesh_id);
     node_interface->SetName(proto_scene_static_mesh.name());
     node_interface->SetParentName(proto_scene_static_mesh.parent());
-    auto maybe_scene_id = level.AddSceneNode(std::move(node_interface));
+    auto maybe_scene_id   = level.AddSceneNode(std::move(node_interface));
     auto render_time_enum = proto_scene_static_mesh.render_time_enum();
     level.AddMeshMaterialId(maybe_scene_id, material_id, render_time_enum);
     if (!maybe_scene_id) throw std::runtime_error("No scene Id.");
@@ -214,6 +213,8 @@ std::function<NodeInterface*(const std::string& name)> GetFunctor(LevelInterface
             std::unique_ptr<NodeInterface> node_light = std::make_unique<frame::NodeLight>(
                 GetFunctor(level), NodeLightEnum::POINT, ParseUniform(proto_scene_light.position()),
                 ParseUniform(proto_scene_light.color()));
+            node_light->SetName(proto_scene_light.name());
+            node_light->SetParentName(proto_scene_light.parent());
             auto maybe_node_id = level.AddSceneNode(std::move(node_light));
             return static_cast<bool>(maybe_node_id);
         }
@@ -222,6 +223,8 @@ std::function<NodeInterface*(const std::string& name)> GetFunctor(LevelInterface
                 std::make_unique<frame::NodeLight>(GetFunctor(level), NodeLightEnum::DIRECTIONAL,
                                                    ParseUniform(proto_scene_light.direction()),
                                                    ParseUniform(proto_scene_light.color()));
+            node_light->SetName(proto_scene_light.name());
+            node_light->SetParentName(proto_scene_light.parent());
             auto maybe_node_id = level.AddSceneNode(std::move(node_light));
             return static_cast<bool>(maybe_node_id);
         }

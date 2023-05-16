@@ -34,10 +34,13 @@ class Image : public ImageInterface {
      * @param size: Size of the image.
      * @param pixel_element_size: Size of one of the element in a pixel (BYTE, SHORT, HALF, FLOAT).
      * @param pixel_element_structure: Structure of a pixel (R, RG, RGB, RGBA).
+     * @param vertical_flip: If true the image will be flipped vertically.
      */
     Image(const std::filesystem::path& file,
           proto::PixelElementSize pixel_element_size = proto::PixelElementSize_BYTE(),
-          proto::PixelStructure pixel_structure      = proto::PixelStructure_RGB());
+          proto::PixelStructure pixel_structure      = proto::PixelStructure_RGB(),
+          bool vertical_flip                         = true);
+
     //! Virtual destructor.
     ~Image();
 

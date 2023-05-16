@@ -4,6 +4,7 @@
 
 #include "frame/file/file_system.h"
 #include "frame/opengl/file/load_texture.h"
+#include "frame/opengl/fill.h"
 #include "frame/opengl/texture.h"
 #include "frame/opengl/texture_cube_map.h"
 
@@ -122,20 +123,39 @@ std::unique_ptr<TextureInterface> ParseCubeMapTextureFiles(const proto::Texture&
 }
 
 std::unique_ptr<frame::TextureInterface> ParseBasicTexture(const proto::Texture& proto_texture,
-                                                           glm::uvec2 size) {
+                                                           glm::uvec2 size, frame::Level& level) {
     CheckParameters(proto_texture);
     if (proto_texture.has_file_name() && !proto_texture.cubemap()) {
         return ParseTextureFile(proto_texture);
     }
-    if (proto_texture.has_file_name() && proto_texture.cubemap()) {
-        return ParseCubeMapTextureFile(proto_texture);
-    }
-    if (proto_texture.has_file_names() && proto_texture.cubemap()) {
-        return ParseCubeMapTextureFiles(proto_texture);
-    }
+
     if (proto_texture.cubemap()) {
-        return ParseCubeMapTexture(proto_texture, size);
+        std::unique_ptr<frame::TextureInterface> cube_map;
+
+        if (proto_texture.has_file_name()) {
+            cube_map = ParseCubeMapTextureFile(proto_texture);
+        } else if (proto_texture.has_file_names()) {
+            cube_map = ParseCubeMapTextureFiles(proto_texture);
+        } else {
+            cube_map = ParseCubeMapTexture(proto_texture, size);
+        }
+
+        if (proto_texture.irradiance().empty()) {
+            return cube_map;
+        }
+
+        if (!proto_texture.irradiance().empty()) {
+            const auto irradiance_id = level.GetIdFromName(proto_texture.irradiance());
+            if (irradiance_id == NullId) {
+                throw std::runtime_error(
+                    "Irradiance map not found. Make sure the irradiance texture is declared before "
+                    "its associated cube map.");
+            }
+
+            return opengl::FillIrradianceFromCubeMap(level, std::move(cube_map), irradiance_id);
+        }
     }
+
     return ParseTexture(proto_texture, size);
 }
 

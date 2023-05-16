@@ -21,14 +21,15 @@ namespace frame::file {
 
 Image::Image(const std::filesystem::path& file,
              proto::PixelElementSize pixel_element_size /*= PixelElementSize::BYTE*/,
-             proto::PixelStructure pixel_structure /*= PixelStructure::RGB*/)
+             proto::PixelStructure pixel_structure /*= PixelStructure::RGB*/,
+             bool vertical_flip /*= true*/)
     : pixel_element_size_(pixel_element_size), pixel_structure_(pixel_structure) {
     const auto& logger = frame::Logger::GetInstance();
     logger->info("Openning image: [{}].", file.string());
     int channels;
     int desired_channels = { static_cast<int>(pixel_structure.value()) };
     // This is in the case of OpenGL (for now the only case).
-    stbi_set_flip_vertically_on_load(true);
+    stbi_set_flip_vertically_on_load(vertical_flip);
     glm::ivec2 size = glm::ivec2(0, 0);
     switch (pixel_element_size.value()) {
         case proto::PixelElementSize::BYTE: {

@@ -803,10 +803,10 @@ class Texture final :
     return *internal_default_instance();
   }
   enum TextureOneofCase {
-    kPixels = 13,
-    kFileName = 14,
+    kPixels = 14,
+    kFileName = 15,
     kPlugin = 17,
-    kFileNames = 15,
+    kFileNames = 18,
     TEXTURE_ONEOF_NOT_SET = 0,
   };
 
@@ -889,21 +889,22 @@ class Texture final :
 
   enum : int {
     kNameFieldNumber = 1,
+    kIrradianceFieldNumber = 6,
     kSizeFieldNumber = 2,
-    kPixelElementSizeFieldNumber = 6,
-    kPixelStructureFieldNumber = 7,
-    kMinFilterFieldNumber = 8,
-    kMagFilterFieldNumber = 9,
-    kWrapSFieldNumber = 10,
-    kWrapTFieldNumber = 11,
+    kPixelElementSizeFieldNumber = 7,
+    kPixelStructureFieldNumber = 8,
+    kMinFilterFieldNumber = 9,
+    kMagFilterFieldNumber = 10,
+    kWrapSFieldNumber = 11,
+    kWrapTFieldNumber = 12,
     kClearZFieldNumber = 3,
     kClearColorFieldNumber = 16,
     kMipmapFieldNumber = 4,
     kCubemapFieldNumber = 5,
-    kPixelsFieldNumber = 13,
-    kFileNameFieldNumber = 14,
+    kPixelsFieldNumber = 14,
+    kFileNameFieldNumber = 15,
     kPluginFieldNumber = 17,
-    kFileNamesFieldNumber = 15,
+    kFileNamesFieldNumber = 18,
   };
   // string name = 1;
   void clear_name();
@@ -917,6 +918,20 @@ class Texture final :
   const std::string& _internal_name() const;
   inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
   std::string* _internal_mutable_name();
+  public:
+
+  // string irradiance = 6;
+  void clear_irradiance();
+  const std::string& irradiance() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_irradiance(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_irradiance();
+  PROTOBUF_NODISCARD std::string* release_irradiance();
+  void set_allocated_irradiance(std::string* irradiance);
+  private:
+  const std::string& _internal_irradiance() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_irradiance(const std::string& value);
+  std::string* _internal_mutable_irradiance();
   public:
 
   // .frame.proto.Size size = 2;
@@ -937,7 +952,7 @@ class Texture final :
       ::frame::proto::Size* size);
   ::frame::proto::Size* unsafe_arena_release_size();
 
-  // .frame.proto.PixelElementSize pixel_element_size = 6;
+  // .frame.proto.PixelElementSize pixel_element_size = 7;
   bool has_pixel_element_size() const;
   private:
   bool _internal_has_pixel_element_size() const;
@@ -955,7 +970,7 @@ class Texture final :
       ::frame::proto::PixelElementSize* pixel_element_size);
   ::frame::proto::PixelElementSize* unsafe_arena_release_pixel_element_size();
 
-  // .frame.proto.PixelStructure pixel_structure = 7;
+  // .frame.proto.PixelStructure pixel_structure = 8;
   bool has_pixel_structure() const;
   private:
   bool _internal_has_pixel_structure() const;
@@ -973,7 +988,7 @@ class Texture final :
       ::frame::proto::PixelStructure* pixel_structure);
   ::frame::proto::PixelStructure* unsafe_arena_release_pixel_structure();
 
-  // .frame.proto.TextureFilter min_filter = 8;
+  // .frame.proto.TextureFilter min_filter = 9;
   bool has_min_filter() const;
   private:
   bool _internal_has_min_filter() const;
@@ -991,7 +1006,7 @@ class Texture final :
       ::frame::proto::TextureFilter* min_filter);
   ::frame::proto::TextureFilter* unsafe_arena_release_min_filter();
 
-  // .frame.proto.TextureFilter mag_filter = 9;
+  // .frame.proto.TextureFilter mag_filter = 10;
   bool has_mag_filter() const;
   private:
   bool _internal_has_mag_filter() const;
@@ -1009,7 +1024,7 @@ class Texture final :
       ::frame::proto::TextureFilter* mag_filter);
   ::frame::proto::TextureFilter* unsafe_arena_release_mag_filter();
 
-  // .frame.proto.TextureFilter wrap_s = 10;
+  // .frame.proto.TextureFilter wrap_s = 11;
   bool has_wrap_s() const;
   private:
   bool _internal_has_wrap_s() const;
@@ -1027,7 +1042,7 @@ class Texture final :
       ::frame::proto::TextureFilter* wrap_s);
   ::frame::proto::TextureFilter* unsafe_arena_release_wrap_s();
 
-  // .frame.proto.TextureFilter wrap_t = 11;
+  // .frame.proto.TextureFilter wrap_t = 12;
   bool has_wrap_t() const;
   private:
   bool _internal_has_wrap_t() const;
@@ -1081,7 +1096,7 @@ class Texture final :
   void _internal_set_cubemap(bool value);
   public:
 
-  // bytes pixels = 13;
+  // bytes pixels = 14;
   bool has_pixels() const;
   private:
   bool _internal_has_pixels() const;
@@ -1099,7 +1114,7 @@ class Texture final :
   std::string* _internal_mutable_pixels();
   public:
 
-  // string file_name = 14;
+  // string file_name = 15;
   bool has_file_name() const;
   private:
   bool _internal_has_file_name() const;
@@ -1135,7 +1150,7 @@ class Texture final :
       ::frame::proto::Plugin* plugin);
   ::frame::proto::Plugin* unsafe_arena_release_plugin();
 
-  // .frame.proto.CubeMapFiles file_names = 15;
+  // .frame.proto.CubeMapFiles file_names = 18;
   bool has_file_names() const;
   private:
   bool _internal_has_file_names() const;
@@ -1171,6 +1186,7 @@ class Texture final :
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr irradiance_;
     ::frame::proto::Size* size_;
     ::frame::proto::PixelElementSize* pixel_element_size_;
     ::frame::proto::PixelStructure* pixel_structure_;
@@ -1775,7 +1791,57 @@ inline void Texture::set_cubemap(bool value) {
   // @@protoc_insertion_point(field_set:frame.proto.Texture.cubemap)
 }
 
-// .frame.proto.PixelElementSize pixel_element_size = 6;
+// string irradiance = 6;
+inline void Texture::clear_irradiance() {
+  _impl_.irradiance_.ClearToEmpty();
+}
+inline const std::string& Texture::irradiance() const {
+  // @@protoc_insertion_point(field_get:frame.proto.Texture.irradiance)
+  return _internal_irradiance();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void Texture::set_irradiance(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.irradiance_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:frame.proto.Texture.irradiance)
+}
+inline std::string* Texture::mutable_irradiance() {
+  std::string* _s = _internal_mutable_irradiance();
+  // @@protoc_insertion_point(field_mutable:frame.proto.Texture.irradiance)
+  return _s;
+}
+inline const std::string& Texture::_internal_irradiance() const {
+  return _impl_.irradiance_.Get();
+}
+inline void Texture::_internal_set_irradiance(const std::string& value) {
+  
+  _impl_.irradiance_.Set(value, GetArenaForAllocation());
+}
+inline std::string* Texture::_internal_mutable_irradiance() {
+  
+  return _impl_.irradiance_.Mutable(GetArenaForAllocation());
+}
+inline std::string* Texture::release_irradiance() {
+  // @@protoc_insertion_point(field_release:frame.proto.Texture.irradiance)
+  return _impl_.irradiance_.Release();
+}
+inline void Texture::set_allocated_irradiance(std::string* irradiance) {
+  if (irradiance != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.irradiance_.SetAllocated(irradiance, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.irradiance_.IsDefault()) {
+    _impl_.irradiance_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:frame.proto.Texture.irradiance)
+}
+
+// .frame.proto.PixelElementSize pixel_element_size = 7;
 inline bool Texture::_internal_has_pixel_element_size() const {
   return this != internal_default_instance() && _impl_.pixel_element_size_ != nullptr;
 }
@@ -1860,7 +1926,7 @@ inline void Texture::set_allocated_pixel_element_size(::frame::proto::PixelEleme
   // @@protoc_insertion_point(field_set_allocated:frame.proto.Texture.pixel_element_size)
 }
 
-// .frame.proto.PixelStructure pixel_structure = 7;
+// .frame.proto.PixelStructure pixel_structure = 8;
 inline bool Texture::_internal_has_pixel_structure() const {
   return this != internal_default_instance() && _impl_.pixel_structure_ != nullptr;
 }
@@ -1945,7 +2011,7 @@ inline void Texture::set_allocated_pixel_structure(::frame::proto::PixelStructur
   // @@protoc_insertion_point(field_set_allocated:frame.proto.Texture.pixel_structure)
 }
 
-// .frame.proto.TextureFilter min_filter = 8;
+// .frame.proto.TextureFilter min_filter = 9;
 inline bool Texture::_internal_has_min_filter() const {
   return this != internal_default_instance() && _impl_.min_filter_ != nullptr;
 }
@@ -2035,7 +2101,7 @@ inline void Texture::set_allocated_min_filter(::frame::proto::TextureFilter* min
   // @@protoc_insertion_point(field_set_allocated:frame.proto.Texture.min_filter)
 }
 
-// .frame.proto.TextureFilter mag_filter = 9;
+// .frame.proto.TextureFilter mag_filter = 10;
 inline bool Texture::_internal_has_mag_filter() const {
   return this != internal_default_instance() && _impl_.mag_filter_ != nullptr;
 }
@@ -2125,7 +2191,7 @@ inline void Texture::set_allocated_mag_filter(::frame::proto::TextureFilter* mag
   // @@protoc_insertion_point(field_set_allocated:frame.proto.Texture.mag_filter)
 }
 
-// .frame.proto.TextureFilter wrap_s = 10;
+// .frame.proto.TextureFilter wrap_s = 11;
 inline bool Texture::_internal_has_wrap_s() const {
   return this != internal_default_instance() && _impl_.wrap_s_ != nullptr;
 }
@@ -2215,7 +2281,7 @@ inline void Texture::set_allocated_wrap_s(::frame::proto::TextureFilter* wrap_s)
   // @@protoc_insertion_point(field_set_allocated:frame.proto.Texture.wrap_s)
 }
 
-// .frame.proto.TextureFilter wrap_t = 11;
+// .frame.proto.TextureFilter wrap_t = 12;
 inline bool Texture::_internal_has_wrap_t() const {
   return this != internal_default_instance() && _impl_.wrap_t_ != nullptr;
 }
@@ -2305,7 +2371,7 @@ inline void Texture::set_allocated_wrap_t(::frame::proto::TextureFilter* wrap_t)
   // @@protoc_insertion_point(field_set_allocated:frame.proto.Texture.wrap_t)
 }
 
-// bytes pixels = 13;
+// bytes pixels = 14;
 inline bool Texture::_internal_has_pixels() const {
   return texture_oneof_case() == kPixels;
 }
@@ -2382,7 +2448,7 @@ inline void Texture::set_allocated_pixels(std::string* pixels) {
   // @@protoc_insertion_point(field_set_allocated:frame.proto.Texture.pixels)
 }
 
-// string file_name = 14;
+// string file_name = 15;
 inline bool Texture::_internal_has_file_name() const {
   return texture_oneof_case() == kFileName;
 }
@@ -2525,7 +2591,7 @@ inline ::frame::proto::Plugin* Texture::mutable_plugin() {
   return _msg;
 }
 
-// .frame.proto.CubeMapFiles file_names = 15;
+// .frame.proto.CubeMapFiles file_names = 18;
 inline bool Texture::_internal_has_file_names() const {
   return texture_oneof_case() == kFileNames;
 }

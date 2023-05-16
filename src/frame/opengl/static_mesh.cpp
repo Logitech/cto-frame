@@ -228,142 +228,145 @@ EntityId CreateCubeStaticMesh(LevelInterface& level) {
     // Create a cube but multiply the size, so we can index it by iota.
     std::vector<float> points = {
         // clang-format off
-		// Face front.
-		-0.5f, -0.5f, -0.5f,
-		 0.5f, -0.5f, -0.5f,
-		 0.5f,  0.5f, -0.5f,
-		 0.5f,  0.5f, -0.5f,
-		-0.5f,  0.5f, -0.5f,
-		-0.5f, -0.5f, -0.5f,
-		// Face back
-		-0.5f, -0.5f,  0.5f,
-		 0.5f, -0.5f,  0.5f,
-		 0.5f,  0.5f,  0.5f,
-		 0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f,  0.5f,
-		-0.5f, -0.5f,  0.5f,
-		// Face left.
-		-0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f, -0.5f,
-		-0.5f, -0.5f, -0.5f,
-		-0.5f, -0.5f, -0.5f,
-		-0.5f, -0.5f,  0.5f,
-		-0.5f,  0.5f,  0.5f,
-		// Face right.
-		 0.5f,  0.5f,  0.5f,
-		 0.5f,  0.5f, -0.5f,
-		 0.5f, -0.5f, -0.5f,
-		 0.5f, -0.5f, -0.5f,
-		 0.5f, -0.5f,  0.5f,
-		 0.5f,  0.5f,  0.5f,
-		// Face bottom.
-		-0.5f, -0.5f, -0.5f,
-		 0.5f, -0.5f, -0.5f,
-		 0.5f, -0.5f,  0.5f,
-		 0.5f, -0.5f,  0.5f,
-		-0.5f, -0.5f,  0.5f,
-		-0.5f, -0.5f, -0.5f,
-		// Face top.
-		-0.5f,  0.5f, -0.5f,
-		 0.5f,  0.5f, -0.5f,
-		 0.5f,  0.5f,  0.5f,
-		 0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f, -0.5f,
+        // back face
+        -1.0f, -1.0f, -1.0f, // bottom-left
+         1.0f,  1.0f, -1.0f, // top-right
+         1.0f, -1.0f, -1.0f, // bottom-right
+         1.0f,  1.0f, -1.0f, // top-right
+        -1.0f, -1.0f, -1.0f, // bottom-left
+        -1.0f,  1.0f, -1.0f, // top-left
+        // front face
+        -1.0f, -1.0f,  1.0f, // bottom-left
+         1.0f, -1.0f,  1.0f, // bottom-right
+         1.0f,  1.0f,  1.0f, // top-right
+         1.0f,  1.0f,  1.0f, // top-right
+        -1.0f,  1.0f,  1.0f, // top-left
+        -1.0f, -1.0f,  1.0f, // bottom-left
+        // left face
+        -1.0f,  1.0f,  1.0f, // top-right
+        -1.0f,  1.0f, -1.0f, // top-left
+        -1.0f, -1.0f, -1.0f, // bottom-left
+        -1.0f, -1.0f, -1.0f, // bottom-left
+        -1.0f, -1.0f,  1.0f, // bottom-right
+        -1.0f,  1.0f,  1.0f, // top-right
+        // right face
+         1.0f,  1.0f,  1.0f, // top-left
+         1.0f, -1.0f, -1.0f, // bottom-right
+         1.0f,  1.0f, -1.0f, // top-right
+         1.0f, -1.0f, -1.0f, // bottom-right
+         1.0f,  1.0f,  1.0f, // top-left
+         1.0f, -1.0f,  1.0f, // bottom-left
+        // bottom face
+        -1.0f, -1.0f, -1.0f,   // top-right
+         1.0f, -1.0f, -1.0f,   // top-left
+         1.0f, -1.0f,  1.0f,   // bottom-left
+         1.0f, -1.0f,  1.0f,   // bottom-left
+        -1.0f, -1.0f,  1.0f,   // bottom-right
+        -1.0f, -1.0f, -1.0f,   // top-right
+        // top face
+        -1.0f,  1.0f, -1.0f, // top-left
+         1.0f,  1.0f , 1.0f, // bottom-right
+         1.0f,  1.0f, -1.0f, // top-right
+         1.0f,  1.0f,  1.0f, // bottom-right
+        -1.0f,  1.0f, -1.0f, // top-left
+        -1.0f,  1.0f,  1.0f  // bottom-left
         // clang-format on
     };
+
     std::vector<float> normals = {
         // clang-format off
-		// Face front.
-		.0f, .0f, -1.f,
-		.0f, .0f, -1.f,
-		.0f, .0f, -1.f,
-		.0f, .0f, -1.f,
-		.0f, .0f, -1.f,
-		.0f, .0f, -1.f,
-        // Face back.
-		.0f, .0f, 1.f,
-		.0f, .0f, 1.f,
-		.0f, .0f, 1.f,
-		.0f, .0f, 1.f,
-		.0f, .0f, 1.f,
-		.0f, .0f, 1.f,
-		// Face left.
-		-1.f, .0f, .0f,
-		-1.f, .0f, .0f,
-		-1.f, .0f, .0f,
-		-1.f, .0f, .0f,
-		-1.f, .0f, .0f,
-		-1.f, .0f, .0f,
-		// Face right.
-		1.f, .0f, .0f,
-		1.f, .0f, .0f,
-		1.f, .0f, .0f,
-		1.f, .0f, .0f,
-		1.f, .0f, .0f,
-		1.f, .0f, .0f,
-		// Face bottom.
-		.0f, -1.f, -.0f,
-		.0f, -1.f, -.0f,
-		.0f, -1.f, -.0f,
-		.0f, -1.f, -.0f,
-		.0f, -1.f, -.0f,
-		.0f, -1.f, -.0f,
-		// Face top.
-		.0f, 1.f, 0.f,
-		.0f, 1.f, 0.f,
-		.0f, 1.f, 0.f,
-		.0f, 1.f, 0.f,
-		.0f, 1.f, 0.f,
-		.0f, 1.f, 0.f,
+        // back face
+        0.0f,  0.0f, -1.0f, // bottom-left
+        0.0f,  0.0f, -1.0f, // top-right
+        0.0f,  0.0f, -1.0f, // bottom-right
+        0.0f,  0.0f, -1.0f, // top-right
+        0.0f,  0.0f, -1.0f, // bottom-left
+        0.0f,  0.0f, -1.0f, // top-left
+        // front face
+        0.0f,  0.0f,  1.0f, // bottom-left
+        0.0f,  0.0f,  1.0f, // bottom-right
+        0.0f,  0.0f,  1.0f, // top-right
+        0.0f,  0.0f,  1.0f, // top-right
+        0.0f,  0.0f,  1.0f, // top-left
+        0.0f,  0.0f,  1.0f, // bottom-left
+        // left face
+        -1.0f,  0.0f,  0.0f, // top-right
+        -1.0f,  0.0f,  0.0f, // top-left
+        -1.0f,  0.0f,  0.0f, // bottom-left
+        -1.0f,  0.0f,  0.0f, // bottom-left
+        -1.0f,  0.0f,  0.0f, // bottom-right
+        -1.0f,  0.0f,  0.0f, // top-right
+        // right face
+        1.0f,  0.0f,  0.0f, // top-left
+        1.0f,  0.0f,  0.0f, // bottom-right
+        1.0f,  0.0f,  0.0f, // top-right
+        1.0f,  0.0f,  0.0f, // bottom-right
+        1.0f,  0.0f,  0.0f, // top-left
+        1.0f,  0.0f,  0.0f, // bottom-left
+        // bottom face
+        0.0f, -1.0f,  0.0f, // top-right
+        0.0f, -1.0f,  0.0f, // top-left
+        0.0f, -1.0f,  0.0f, // bottom-left
+        0.0f, -1.0f,  0.0f, // bottom-left
+        0.0f, -1.0f,  0.0f, // bottom-right
+        0.0f, -1.0f,  0.0f, // top-right
+        // top face
+        0.0f,  1.0f,  0.0f, // top-left
+        0.0f,  1.0f,  0.0f, // bottom-right
+        0.0f,  1.0f,  0.0f, // top-right
+        0.0f,  1.0f,  0.0f, // bottom-right
+        0.0f,  1.0f,  0.0f, // top-left
+        0.0f,  1.0f,  0.0f  // bottom-left
         // clang-format on
     };
+
     std::vector<float> textures = {
         // clang-format off
-		// Face front.
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f,
-		// Face back.
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f,
-		// Face left.
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		// Face right.
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		// Face bottom.
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
-		1.0f, 0.0f,
-		0.0f, 0.0f,
-		0.0f, 1.0f,
-		// Face top.
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
-		1.0f, 0.0f,
-		0.0f, 0.0f,
-		0.0f, 1.0f
+		// back face
+        0.0f, 0.0f, // bottom-left
+        1.0f, 1.0f, // top-right
+        1.0f, 0.0f, // bottom-right
+        1.0f, 1.0f, // top-right
+        0.0f, 0.0f, // bottom-left
+        0.0f, 1.0f, // top-left
+        // front face
+        0.0f, 0.0f, // bottom-left
+        1.0f, 0.0f, // bottom-right
+        1.0f, 1.0f, // top-right
+        1.0f, 1.0f, // top-right
+        0.0f, 1.0f, // top-left
+        0.0f, 0.0f, // bottom-left
+        // left face
+        1.0f, 0.0f, // top-right
+        1.0f, 1.0f, // top-left
+        0.0f, 1.0f, // bottom-left
+        0.0f, 1.0f, // bottom-left
+        0.0f, 0.0f, // bottom-right
+        1.0f, 0.0f, // top-right
+        // right face
+        1.0f, 0.0f, // top-left
+        0.0f, 1.0f, // bottom-right
+        1.0f, 1.0f, // top-right
+        0.0f, 1.0f, // bottom-right
+        1.0f, 0.0f, // top-left
+        0.0f, 0.0f, // bottom-left
+        // bottom face
+        0.0f, 1.0f, // top-right
+        1.0f, 1.0f, // top-left
+        1.0f, 0.0f, // bottom-left
+        1.0f, 0.0f, // bottom-left
+        0.0f, 0.0f, // bottom-right
+        0.0f, 1.0f, // top-right
+        // top face
+        0.0f, 1.0f, // top-left
+        1.0f, 0.0f, // bottom-right
+        1.0f, 1.0f, // top-right
+        1.0f, 0.0f, // bottom-right
+        0.0f, 1.0f, // top-left
+        0.0f, 0.0f  // bottom-left
         // clang-format on
     };
+
     std::vector<std::uint32_t> indices;
     indices.resize(18 * 3);
     std::iota(indices.begin(), indices.end(), 0);

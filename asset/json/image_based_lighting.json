@@ -1,5 +1,5 @@
 {
-  "name": "LastMonsterStanding",
+  "name": "ImageBasedLighting",
   "default_texture_name": "albedo",
   "textures": [
     {
@@ -12,21 +12,22 @@
       "pixel_structure": { "value": "RGB" }
     },
     {
-      "name": "skybox",
-      "cubemap": true,
-      "pixel_element_size": { "value": "FLOAT" },
-      "pixel_structure": { "value": "RGB" },
-      "file_name": "asset/cubemap/shiodome.hdr"
-    },
-    {
       "name": "irradiance",
       "cubemap": true,
       "pixel_element_size": { "value": "FLOAT" },
       "pixel_structure": { "value": "RGB" },
       "size": {
-        "x": 512,
-        "y": 512
+        "x": 64,
+        "y": 64
       }
+    },
+    {
+      "name": "skybox",
+      "cubemap": true,
+      "irradiance": "irradiance",
+      "pixel_element_size": { "value": "FLOAT" },
+      "pixel_structure": { "value": "RGB" },
+      "file_name": "asset/cubemap/shiodome.hdr"
     },
     {
       "name": "apple_texture",
@@ -34,64 +35,26 @@
       "pixel_element_size": { "value": "BYTE" },
       "pixel_structure": { "value": "RGB" },
       "file_name": "asset/apple/color.jpg"
-    },
-    {
-      "name": "zbuffer",
-      "cubemap": "false",
-      "size": {
-        "x": -1,
-        "y": -1
-      },
-      "pixel_element_size": { "value": "BYTE" },
-      "pixel_structure": { "value": "RGB" }
     }
   ],
   "materials": [
     {
       "name": "ImageBasedLightingMaterial",
       "program_name": "ImageBasedLightingProgram",
-      "texture_names": [ "apple_texture", "irradiance" ],
-      "inner_names": [ "Color", "IrradianceMap" ]
+      "texture_names": ["apple_texture", "irradiance"],
+      "inner_names": ["Color", "IrradianceMap"]
     },
     {
       "name": "CubeMapMaterial",
       "program_name": "CubeMapProgram",
-      "texture_names": [ "skybox" ],
-      "inner_names": [ "Skybox" ]
-    },
-    {
-      "name": "IrradianceMaterial",
-      "program_name": "IrradianceProgram",
-      "texture_names": [ "skybox" ],
-      "inner_names": [ "Environment" ]
+      "texture_names": ["skybox"],
+      "inner_names": ["Skybox"]
     }
   ],
   "programs": [
     {
-      "name": "IrradianceProgram",
-      "input_texture_names": [ "skybox" ],
-      "output_texture_names": [ "irradiance" ],
-      "input_scene_type": { "value": "CUBE" },
-      "shader": "irradiance_cubemap",
-      "parameters": [
-        {
-          "name": "projection",
-          "uniform_enum": "PROJECTION_MAT4"
-        },
-        {
-          "name": "view",
-          "uniform_enum": "VIEW_MAT4"
-        },
-        {
-          "name": "model",
-          "uniform_enum": "MODEL_MAT4"
-        }
-      ]
-    },
-    {
       "name": "CubeMapProgram",
-      "input_texture_names": [ "skybox" ],
-      "output_texture_names": [ "albedo" ],
+      "output_texture_names": ["albedo"],
       "input_scene_type": { "value": "CUBE" },
       "shader": "cubemap",
       "parameters": [
@@ -111,8 +74,7 @@
     },
     {
       "name": "ImageBasedLightingProgram",
-      "input_texture_names": [ "apple_texture", "skybox" ],
-      "output_texture_names": [ "albedo" ],
+      "output_texture_names": ["albedo"],
       "input_scene_type": { "value": "SCENE" },
       "input_scene_root_name": "root",
       "shader": "image_based_lighting",
@@ -168,16 +130,9 @@
     ],
     "scene_static_meshes": [
       {
-        "name": "ComputeIrradianceMap",
-        "parent": "root",
-        "mesh_enum": "CUBE",
-        "render_time_enum": "PRE_RENDER",
-        "material_name": "IrradianceMaterial"
-      },
-      {
         "name": "InitCleanBuffer",
         "clean_buffer": {
-          "values": [ "CLEAR_COLOR", "CLEAR_DEPTH" ]
+          "values": ["CLEAR_COLOR", "CLEAR_DEPTH"]
         }
       },
       {
@@ -189,7 +144,7 @@
       {
         "name": "ClearDepthBuffer",
         "clean_buffer": {
-          "values": [ "CLEAR_DEPTH" ]
+          "values": ["CLEAR_DEPTH"]
         }
       },
       {
