@@ -14,7 +14,16 @@ std::unique_ptr<frame::ProgramInterface> ParseProgramOpenGL(const Program& proto
                                                             LevelInterface& level) {
     Logger& logger = Logger::GetInstance();
     // Create the program.
-    auto program = opengl::file::LoadProgram(proto_program.shader());
+    std::unique_ptr<frame::ProgramInterface> program;
+    if (proto_program.shader_size() == 1) {
+        program = opengl::file::LoadProgramFromName(proto_program.shader(0));
+    } else if (proto_program.shader_size() == 2) {
+        program =
+            opengl::file::LoadProgramFromName(proto_program.shader(0), proto_program.shader(1));
+    } else if (proto_program.shader_size() == 3) {
+        program = opengl::file::LoadProgramFromName(
+            proto_program.shader(0), proto_program.shader(1), proto_program.shader(2));
+    }
     if (!program) return nullptr;
     for (const auto& texture_name : proto_program.input_texture_names()) {
         auto maybe_texture_id = level.GetIdFromName(texture_name);

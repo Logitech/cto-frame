@@ -41,7 +41,7 @@ Renderer::Renderer(LevelInterface& level, glm::uvec4 viewport)
     // TODO(anirul): Check viewport!!!
     render_buffer_.CreateStorage({ viewport_.z - viewport_.x, viewport_.w - viewport_.y });
     frame_buffer_.AttachRender(render_buffer_);
-    auto program = file::LoadProgram("display");
+    auto program = file::LoadProgramFromName("display");
     if (!program) throw std::runtime_error("No program!");
     auto material = std::make_unique<Material>();
     program->SetName("DisplayProgram");

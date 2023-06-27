@@ -55,6 +55,14 @@ glm::mat4 Camera::ComputeProjection() const {
     return glm::perspective(fov_rad_, aspect_ratio_, near_clip_, far_clip_);
 }
 
+glm::mat4 Camera::ComputeProjection(float fov_rad) const {
+    return glm::perspective(fov_rad, aspect_ratio_, near_clip_, far_clip_);
+}
+
+glm::mat4 Camera::ComputeProjection(float fov_rad, float aspect_ratio) const {
+    return glm::perspective(fov_rad, aspect_ratio, near_clip_, far_clip_);
+}
+
 void Camera::SetPosition(glm::vec3 vec) { position_ = vec; }
 
 bool Camera::SetFront(glm::vec3 vec) {

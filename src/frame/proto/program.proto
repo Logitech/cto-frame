@@ -33,7 +33,9 @@ message Program {
 	// Input Scenes name.
 	string input_scene_root_name = 5;
 	// Shader name (used to find the shader).
-	string shader = 6;
+	// One argument will be evaluated as the name for all 2 (3) shader files.
+	// Multiple arguments will be evaluated in the order: vertex, fragment, geometry.
+	repeated string shader = 6;
 	// Additionnal parameters for the shader.
 	repeated Uniform parameters = 7;
 }

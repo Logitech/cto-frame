@@ -54,6 +54,23 @@ class Camera {
      * @return A mat4 of the projection matrix.
      */
     glm::mat4 ComputeProjection() const;
+
+    /**
+     * @brief Compute the projection matrix.
+     * @param fov_rad: Vertical field of view in radians, will override the stored the fov value.
+     * @return A mat4 of the projection matrix.
+     */
+    glm::mat4 ComputeProjection(float fov_rad) const;
+
+    /**
+     * @brief Compute the projection matrix.
+     * @param fov_rad: Vertical field of view in radians, will override the stored fov attribute.
+     * @param aspect_ratio: Aspect ratio for projection, will override the stored aspect ratio
+     * attribute.
+     * @return A mat4 of the projection matrix.
+     */
+    glm::mat4 ComputeProjection(float fov_rad, float aspect_ratio) const;
+
     /**
      * @brief Update the front vector (normalized) and update the whole camera accordingly.
      * @param vec: Front vector of the camera.
