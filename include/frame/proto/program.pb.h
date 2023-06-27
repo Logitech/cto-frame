@@ -397,10 +397,10 @@ class Program final :
   enum : int {
     kInputTextureNamesFieldNumber = 3,
     kOutputTextureNamesFieldNumber = 4,
+    kShaderFieldNumber = 6,
     kParametersFieldNumber = 7,
     kNameFieldNumber = 1,
     kInputSceneRootNameFieldNumber = 5,
-    kShaderFieldNumber = 6,
     kInputSceneTypeFieldNumber = 9,
   };
   // repeated string input_texture_names = 3;
@@ -451,6 +451,30 @@ class Program final :
   std::string* _internal_add_output_texture_names();
   public:
 
+  // repeated string shader = 6;
+  int shader_size() const;
+  private:
+  int _internal_shader_size() const;
+  public:
+  void clear_shader();
+  const std::string& shader(int index) const;
+  std::string* mutable_shader(int index);
+  void set_shader(int index, const std::string& value);
+  void set_shader(int index, std::string&& value);
+  void set_shader(int index, const char* value);
+  void set_shader(int index, const char* value, size_t size);
+  std::string* add_shader();
+  void add_shader(const std::string& value);
+  void add_shader(std::string&& value);
+  void add_shader(const char* value);
+  void add_shader(const char* value, size_t size);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& shader() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_shader();
+  private:
+  const std::string& _internal_shader(int index) const;
+  std::string* _internal_add_shader();
+  public:
+
   // repeated .frame.proto.Uniform parameters = 7;
   int parameters_size() const;
   private:
@@ -497,20 +521,6 @@ class Program final :
   std::string* _internal_mutable_input_scene_root_name();
   public:
 
-  // string shader = 6;
-  void clear_shader();
-  const std::string& shader() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_shader(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_shader();
-  PROTOBUF_NODISCARD std::string* release_shader();
-  void set_allocated_shader(std::string* shader);
-  private:
-  const std::string& _internal_shader() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_shader(const std::string& value);
-  std::string* _internal_mutable_shader();
-  public:
-
   // .frame.proto.SceneType input_scene_type = 9;
   bool has_input_scene_type() const;
   private:
@@ -539,10 +549,10 @@ class Program final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> input_texture_names_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> output_texture_names_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> shader_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::frame::proto::Uniform > parameters_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr input_scene_root_name_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr shader_;
     ::frame::proto::SceneType* input_scene_type_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -924,54 +934,79 @@ inline void Program::set_allocated_input_scene_root_name(std::string* input_scen
   // @@protoc_insertion_point(field_set_allocated:frame.proto.Program.input_scene_root_name)
 }
 
-// string shader = 6;
+// repeated string shader = 6;
+inline int Program::_internal_shader_size() const {
+  return _impl_.shader_.size();
+}
+inline int Program::shader_size() const {
+  return _internal_shader_size();
+}
 inline void Program::clear_shader() {
-  _impl_.shader_.ClearToEmpty();
+  _impl_.shader_.Clear();
 }
-inline const std::string& Program::shader() const {
-  // @@protoc_insertion_point(field_get:frame.proto.Program.shader)
-  return _internal_shader();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void Program::set_shader(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.shader_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:frame.proto.Program.shader)
-}
-inline std::string* Program::mutable_shader() {
-  std::string* _s = _internal_mutable_shader();
-  // @@protoc_insertion_point(field_mutable:frame.proto.Program.shader)
+inline std::string* Program::add_shader() {
+  std::string* _s = _internal_add_shader();
+  // @@protoc_insertion_point(field_add_mutable:frame.proto.Program.shader)
   return _s;
 }
-inline const std::string& Program::_internal_shader() const {
-  return _impl_.shader_.Get();
+inline const std::string& Program::_internal_shader(int index) const {
+  return _impl_.shader_.Get(index);
 }
-inline void Program::_internal_set_shader(const std::string& value) {
-  
-  _impl_.shader_.Set(value, GetArenaForAllocation());
+inline const std::string& Program::shader(int index) const {
+  // @@protoc_insertion_point(field_get:frame.proto.Program.shader)
+  return _internal_shader(index);
 }
-inline std::string* Program::_internal_mutable_shader() {
-  
-  return _impl_.shader_.Mutable(GetArenaForAllocation());
+inline std::string* Program::mutable_shader(int index) {
+  // @@protoc_insertion_point(field_mutable:frame.proto.Program.shader)
+  return _impl_.shader_.Mutable(index);
 }
-inline std::string* Program::release_shader() {
-  // @@protoc_insertion_point(field_release:frame.proto.Program.shader)
-  return _impl_.shader_.Release();
+inline void Program::set_shader(int index, const std::string& value) {
+  _impl_.shader_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set:frame.proto.Program.shader)
 }
-inline void Program::set_allocated_shader(std::string* shader) {
-  if (shader != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.shader_.SetAllocated(shader, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.shader_.IsDefault()) {
-    _impl_.shader_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:frame.proto.Program.shader)
+inline void Program::set_shader(int index, std::string&& value) {
+  _impl_.shader_.Mutable(index)->assign(std::move(value));
+  // @@protoc_insertion_point(field_set:frame.proto.Program.shader)
+}
+inline void Program::set_shader(int index, const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _impl_.shader_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:frame.proto.Program.shader)
+}
+inline void Program::set_shader(int index, const char* value, size_t size) {
+  _impl_.shader_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:frame.proto.Program.shader)
+}
+inline std::string* Program::_internal_add_shader() {
+  return _impl_.shader_.Add();
+}
+inline void Program::add_shader(const std::string& value) {
+  _impl_.shader_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:frame.proto.Program.shader)
+}
+inline void Program::add_shader(std::string&& value) {
+  _impl_.shader_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:frame.proto.Program.shader)
+}
+inline void Program::add_shader(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _impl_.shader_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:frame.proto.Program.shader)
+}
+inline void Program::add_shader(const char* value, size_t size) {
+  _impl_.shader_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:frame.proto.Program.shader)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
+Program::shader() const {
+  // @@protoc_insertion_point(field_list:frame.proto.Program.shader)
+  return _impl_.shader_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
+Program::mutable_shader() {
+  // @@protoc_insertion_point(field_mutable_list:frame.proto.Program.shader)
+  return &_impl_.shader_;
 }
 
 // repeated .frame.proto.Uniform parameters = 7;

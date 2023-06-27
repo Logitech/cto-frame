@@ -228,18 +228,22 @@ class Program : public ProgramInterface {
 
 /**
  * @brief Create a program from two streams.
+ * @param name: Name of the program.
  * @param vertex_shader_code: Stream containing code of vertex shader.
  * @param pixel_shader_code: Stream containing code of fragment shader.
  */
-std::unique_ptr<frame::ProgramInterface> CreateProgram(std::istream& vertex_shader_code,
+std::unique_ptr<frame::ProgramInterface> CreateProgram(const std::string& name,
+                                                       std::istream& vertex_shader_code,
                                                        std::istream& pixel_shader_code);
 /**
  * @brief Create a program from two streams.
+ * @param name: Name of the program.
  * @param vertex_shader_code: Stream containing code of vertex shader.
  * @param pixel_shader_code: Stream containing code of fragment shader.
  * @param geometry_shader_code: Stream containing code of geometry shader.
  */
-std::unique_ptr<frame::ProgramInterface> CreateProgram(std::istream& vertex_shader_code,
+std::unique_ptr<frame::ProgramInterface> CreateProgram(const std::string& name,
+                                                       std::istream& vertex_shader_code,
                                                        std::istream& pixel_shader_code,
                                                        std::istream& geometry_shader_code);
 

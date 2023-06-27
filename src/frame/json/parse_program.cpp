@@ -18,11 +18,14 @@ std::unique_ptr<frame::ProgramInterface> ParseProgramOpenGL(const Program& proto
     if (proto_program.shader_size() == 1) {
         program = opengl::file::LoadProgramFromName(proto_program.shader(0));
     } else if (proto_program.shader_size() == 2) {
-        program =
-            opengl::file::LoadProgramFromName(proto_program.shader(0), proto_program.shader(1));
-    } else if (proto_program.shader_size() == 3) {
+        // Use the vertex shader name as the program name.
         program = opengl::file::LoadProgramFromName(
-            proto_program.shader(0), proto_program.shader(1), proto_program.shader(2));
+            proto_program.shader(0), proto_program.shader(0), proto_program.shader(1));
+    } else if (proto_program.shader_size() == 3) {
+        // Use the vertex shader name as the program name.
+        program =
+            opengl::file::LoadProgramFromName(proto_program.shader(0), proto_program.shader(0),
+                                              proto_program.shader(1), proto_program.shader(2));
     }
     if (!program) return nullptr;
     for (const auto& texture_name : proto_program.input_texture_names()) {

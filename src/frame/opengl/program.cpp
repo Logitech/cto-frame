@@ -317,20 +317,23 @@ std::string Program::GetTemporarySceneRoot() const { return temporary_scene_root
 
 void Program::SetTemporarySceneRoot(const std::string& name) { temporary_scene_root_ = name; }
 
-std::unique_ptr<ProgramInterface> CreateProgram(std::istream& vertex_shader_code,
+std::unique_ptr<ProgramInterface> CreateProgram(const std::string& name,
+                                                std::istream& vertex_shader_code,
                                                 std::istream& pixel_shader_code) {
     std::istream empty_geometry_shader(nullptr);
-    return std::move(CreateProgram(vertex_shader_code, pixel_shader_code, empty_geometry_shader));
+    return std::move(
+        CreateProgram(name, vertex_shader_code, pixel_shader_code, empty_geometry_shader));
 }
 
-std::unique_ptr<frame::ProgramInterface> CreateProgram(std::istream& vertex_shader_code,
+std::unique_ptr<frame::ProgramInterface> CreateProgram(const std::string& name,
+                                                       std::istream& vertex_shader_code,
                                                        std::istream& pixel_shader_code,
                                                        std::istream& geometry_shader_code) {
 #ifdef _DEBUG
     auto& logger = Logger::GetInstance();
     logger->info("Creating program");
 #endif  // _DEBUG
-    auto program = std::make_unique<Program>();
+    auto program = std::make_unique<Program>(name);
     std::string vertex_source(std::istreambuf_iterator<char>(vertex_shader_code), {});
     Shader vertex(ShaderEnum::VERTEX_SHADER);
     if (!vertex.LoadFromSource(vertex_source)) {
