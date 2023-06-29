@@ -30,6 +30,11 @@ class UniformInterface {
      */
     virtual glm::mat4 GetModel() const = 0;
     /**
+     * @brief Get the environment model matrix.
+     * @return The environment model matrix.
+     */
+    virtual glm::mat4 GetEnvironmentModel() const = 0;
+    /**
      * @brief Get the delta time.
      * @return The delta time.
      */

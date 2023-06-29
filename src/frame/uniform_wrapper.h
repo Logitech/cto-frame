@@ -12,16 +12,16 @@ namespace frame {
  */
 class UniformWrapper : public UniformInterface {
    public:
-	/**
-	 * @brief Default constructor.
-	 */
-	UniformWrapper() = default;
+    /**
+     * @brief Default constructor.
+     */
+    UniformWrapper() = default;
     /**
      * @brief Constructor create a wrapper from a camera pointer.
      * @param Camera pointer.
      */
     UniformWrapper(const glm::mat4& projection, const glm::mat4& view, const glm::mat4& model,
-                   double dt);
+                   const glm::mat4& environment_model, double dt);
 
    public:
     /**
@@ -39,6 +39,11 @@ class UniformWrapper : public UniformInterface {
      * @param model: The model matrix.
      */
     void SetModel(glm::mat4 model) { model_ = model; }
+    /**
+     * @brief Set the environment model matrix.
+     * @param model: The environment model matrix.
+     */
+    void SetEnvironmentModel(glm::mat4 model) { environment_model_ = model; }
     /**
      * @brief Set the delta time.
      * @param time: The delta time.
@@ -61,6 +66,11 @@ class UniformWrapper : public UniformInterface {
      * @return The model matrix.
      */
     glm::mat4 GetModel() const override;
+    /**
+     * @brief Get the environment model matrix.
+     * @return The environment model matrix.
+     */
+    glm::mat4 GetEnvironmentModel() const override;
     /**
      * @brief Set value float.
      * @param name: Connection name.
@@ -127,6 +137,7 @@ class UniformWrapper : public UniformInterface {
         glm::uvec2 size;
     };
     glm::mat4 model_                                           = glm::mat4(1.0f);
+    glm::mat4 environment_model_                               = glm::mat4(1.0f);
     glm::mat4 projection_                                      = glm::mat4(1.0f);
     glm::mat4 view_                                            = glm::mat4(1.0f);
     std::map<std::string, FloatValues> stream_value_float_map_ = {};

@@ -144,6 +144,16 @@ class LevelInterface : public NameInterface {
      */
     virtual void SetDefaultStaticMeshCubeId(EntityId id) = 0;
     /**
+     * @brief Get the Default Environment Model matrix.
+     * @return The default environment model matrix.
+     */
+    virtual glm::mat4 GetDefaultEnvironmentModel() const = 0;
+    /**
+     * @brief Set the Default Environment Model matrix.
+     * @param model: The default environment model matrix.
+     */
+    virtual void SetDefaultEnvironmentModel(const glm::mat4& model) = 0;
+    /**
      * @brief Add scene node to the scene tree.
      * @param scene_node: Move a scene node to the scene tree.
      * @return Assigned entity id or error.

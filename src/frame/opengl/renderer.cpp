@@ -104,7 +104,8 @@ void Renderer::RenderMesh(StaticMeshInterface& static_mesh, MaterialInterface& m
     assert(program.GetOutputTextureIds().size());
 
     // In case the camera doesn't exist it will create a basic one.
-    UniformWrapper uniform_wrapper(projection, view, model, dt);
+    UniformWrapper uniform_wrapper(projection, view, model, level_.GetDefaultEnvironmentModel(),
+                                   dt);
     // Go through the callback.
     callback_(uniform_wrapper, static_mesh, material);
     program.Use(uniform_wrapper);
@@ -283,9 +284,6 @@ void Renderer::RenderAllMeshes(const glm::mat4& projection, const glm::mat4& vie
                     SetCubeMapTarget(GetTextureFrameFromPosition(i));
                     RenderNode(p.first, material_id, projection_cubemap, views_cubemap[i], dt);
                 }
-                // Again why?
-                // SetCubeMapTarget(GetTextureFrameFromPosition(0));
-                // RenderNode(p.first, material_id, projection_cubemap, views_cubemap[0], dt);
             }
             viewport_ = temp_viewport;
         } else {

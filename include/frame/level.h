@@ -34,6 +34,11 @@ class Level : public LevelInterface {
      */
     void SetDefaultStaticMeshCubeId(EntityId id) final { cube_id_ = id; }
     /**
+     * @brief Set the Default Environment Model matrix.
+     * @param model: The default environment model matrix.
+     */
+    void SetDefaultEnvironmentModel(const glm::mat4& model) final { environment_model_ = model; }
+    /**
      * @brief Will get the scene node from an id.
      * @param id: The id to get the scene node from.
      * @return A pointer to the node or null.
@@ -86,7 +91,7 @@ class Level : public LevelInterface {
      * @return Vector of static mesh id and corresponding material id and RenderTimeEnum.
      */
     std::vector<std::pair<EntityId, std::tuple<EntityId, proto::SceneStaticMesh::RenderTimeEnum>>>
-		GetStaticMeshMaterialIds() const override {
+    GetStaticMeshMaterialIds() const override {
         return mesh_material_ids_;
     }
     /**
@@ -134,7 +139,7 @@ class Level : public LevelInterface {
     void AddMeshMaterialId(EntityId node_id, EntityId material_id,
                            proto::SceneStaticMesh::RenderTimeEnum render_time_enum =
                                proto::SceneStaticMesh::PER_FRAME) override {
-        mesh_material_ids_.push_back({node_id, {material_id, render_time_enum}});
+        mesh_material_ids_.push_back({ node_id, { material_id, render_time_enum } });
     }
     /**
      * @brief Get enum type from Id.
@@ -164,6 +169,11 @@ class Level : public LevelInterface {
      * @return The id of the cube static mesh id or error.
      */
     EntityId GetDefaultStaticMeshCubeId() const final;
+    /**
+     * @brief Get the Default Environment Model matrix.
+     * @return The default environment model matrix.
+     */
+    glm::mat4 GetDefaultEnvironmentModel() const final;
     /**
      * @brief Get the id of an element from a name string.
      * @param name: The name string of the element.
@@ -303,6 +313,7 @@ class Level : public LevelInterface {
     std::string default_texture_name_;
     std::string default_root_scene_node_name_;
     std::string default_camera_name_;
+    glm::mat4 environment_model_ = glm::mat4(1.0f);
     // These are storage so unique ptr interface.
     std::map<EntityId, std::unique_ptr<NodeInterface>> id_scene_node_map_        = {};
     std::map<EntityId, std::unique_ptr<TextureInterface>> id_texture_map_        = {};
@@ -311,12 +322,12 @@ class Level : public LevelInterface {
     std::map<EntityId, std::unique_ptr<BufferInterface>> id_buffer_map_          = {};
     std::map<EntityId, std::unique_ptr<StaticMeshInterface>> id_static_mesh_map_ = {};
     // These are storage specifiers.
-    std::set<std::string> string_set_                             = {};
-    std::map<std::string, EntityId> name_id_map_                  = {};
-    std::map<EntityId, std::string> id_name_map_                  = {};
-    std::map<EntityId, EntityTypeEnum> id_enum_map_               = {};
+    std::set<std::string> string_set_               = {};
+    std::map<std::string, EntityId> name_id_map_    = {};
+    std::map<EntityId, std::string> id_name_map_    = {};
+    std::map<EntityId, EntityTypeEnum> id_enum_map_ = {};
     std::vector<std::pair<EntityId, std::tuple<EntityId, proto::SceneStaticMesh::RenderTimeEnum>>>
-		mesh_material_ids_ = {};
+        mesh_material_ids_ = {};
 };
 
 }  // End namespace frame.

@@ -27,6 +27,8 @@ EntityId Level::GetDefaultStaticMeshCubeId() const {
     return NullId;
 }
 
+glm::mat4 Level::GetDefaultEnvironmentModel() const { return environment_model_; }
+
 EntityId Level::GetIdFromName(const std::string& name) const {
     if (name.empty()) {
         logger_->warn("name is empty.");

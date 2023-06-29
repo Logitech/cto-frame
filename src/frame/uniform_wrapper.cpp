@@ -5,18 +5,21 @@
 namespace frame {
 
 UniformWrapper::UniformWrapper(const glm::mat4& projection, const glm::mat4& view,
-                               const glm::mat4& model, double time)
-    : projection_(projection), view_(view), model_(model), time_(time) {}
+                               const glm::mat4& model, const glm::mat4& environment_model,
+                               double time)
+    : projection_(projection),
+      view_(view),
+      model_(model),
+      environment_model_(environment_model),
+      time_(time) {}
 
-glm::mat4 UniformWrapper::GetProjection() const {
-    return projection_;
-}
+glm::mat4 UniformWrapper::GetProjection() const { return projection_; }
 
-glm::mat4 UniformWrapper::GetView() const {
-    return view_;
-}
+glm::mat4 UniformWrapper::GetView() const { return view_; }
 
 glm::mat4 UniformWrapper::GetModel() const { return model_; }
+
+glm::mat4 UniformWrapper::GetEnvironmentModel() const { return environment_model_; }
 
 void UniformWrapper::SetValueFloat(const std::string& name, const std::vector<float>& vector,
                                    glm::uvec2 size) {
@@ -58,13 +61,11 @@ std::vector<std::string> UniformWrapper::GetIntNames() const {
     return list;
 }
 
-glm::uvec2 UniformWrapper::GetSizeFromFloat(
-    const std::string& name) const {
+glm::uvec2 UniformWrapper::GetSizeFromFloat(const std::string& name) const {
     return stream_value_float_map_.at(name).size;
 }
 
-glm::uvec2 UniformWrapper::GetSizeFromInt(
-    const std::string& name) const {
+glm::uvec2 UniformWrapper::GetSizeFromInt(const std::string& name) const {
     return stream_value_int_map_.at(name).size;
 }
 

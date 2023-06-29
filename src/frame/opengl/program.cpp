@@ -57,6 +57,9 @@ void Program::Use(const UniformInterface& uniform_interface) const {
     if (HasUniform("model")) {
         Uniform("model", uniform_interface.GetModel());
     }
+    if (HasUniform("environment_model")) {
+        Uniform("environment_model", uniform_interface.GetEnvironmentModel());
+    }
     if (HasUniform("time_s")) {
         Uniform("time_s", static_cast<float>(uniform_interface.GetDeltaTime()));
     }

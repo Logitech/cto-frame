@@ -41,6 +41,9 @@ std::function<NodeInterface*(const std::string& name)> GetFunctor(LevelInterface
     }
     scene_matrix->SetName(proto_scene_matrix.name());
     scene_matrix->SetParentName(proto_scene_matrix.parent());
+    if (proto_scene_matrix.name() == "skybox_holder") {
+        level.SetDefaultEnvironmentModel(scene_matrix->GetLocalModel(0));
+    }
     auto maybe_scene_id = level.AddSceneNode(std::move(scene_matrix));
     return static_cast<bool>(maybe_scene_id);
 }
