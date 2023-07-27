@@ -103,6 +103,11 @@ class Device : public DeviceInterface {
      */
     LevelInterface& GetLevel() final { return *level_.get(); }
     /**
+     * @brief  Get the current renderer (can be nullptr).
+     * @return A pointer to the renderer.
+     */
+    std::unique_ptr<RendererInterface>& GetRenderer() final { return renderer_; }
+    /**
      * @brief Get the current context.
      * @return A pointer to the current context (this is used by the windowing system).
      */
@@ -169,7 +174,7 @@ class Device : public DeviceInterface {
     glm::uvec2 size_                                  = { 0, 0 };
     const proto::PixelElementSize pixel_element_size_ = proto::PixelElementSize_HALF();
     // Rendering pipeline.
-    std::unique_ptr<Renderer> renderer_ = nullptr;
+    std::unique_ptr<RendererInterface> renderer_ = nullptr;
     // Stereo mode.
     StereoEnum stereo_enum_     = StereoEnum::NONE;
     float interocular_distance_ = 0.0f;

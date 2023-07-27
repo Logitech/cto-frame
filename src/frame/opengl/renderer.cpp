@@ -64,9 +64,11 @@ Renderer::Renderer(LevelInterface& level, glm::uvec4 viewport)
 }
 
 void Renderer::RenderNode(EntityId node_id, EntityId material_id, const glm::mat4& projection,
-                          const glm::mat4& view, double dt /* = 0.0*/) {
+                          const glm::mat4& view, double t /* = 0.0*/) {
     // Bail out in case of no node.
     if (node_id == NullId) return;
+    // Keep in memory the time.
+    latest_time_ = t;
     // Check current node.
     auto& node = level_.GetSceneNodeFromId(node_id);
     // Try to cast to a node static mesh.
@@ -87,13 +89,17 @@ void Renderer::RenderNode(EntityId node_id, EntityId material_id, const glm::mat
         throw std::runtime_error("No material?");
     }
     MaterialInterface& material = level_.GetMaterialFromId(material_id);
-    RenderMesh(static_mesh, material, projection, view, node.GetLocalModel(dt), dt);
+    RenderMesh(static_mesh, material, projection, view, node.GetLocalModel(t), t);
 }
 
 void Renderer::RenderMesh(StaticMeshInterface& static_mesh, MaterialInterface& material,
                           const glm::mat4& projection, const glm::mat4& view,
-                          const glm::mat4& model /* = glm::mat4(1.0f)*/, double dt /* = 0.0*/) {
+                          const glm::mat4& model /* = glm::mat4(1.0f)*/, double t /* = 0.0*/) {
     ScopedBind scoped_frame(frame_buffer_);
+
+    // Keep in memory the time.
+    latest_time_ = t;
+
     if (static_mesh.IsClearBuffer()) {
         glClear(GL_DEPTH_BUFFER_BIT);
     }
@@ -104,8 +110,7 @@ void Renderer::RenderMesh(StaticMeshInterface& static_mesh, MaterialInterface& m
     assert(program.GetOutputTextureIds().size());
 
     // In case the camera doesn't exist it will create a basic one.
-    UniformWrapper uniform_wrapper(projection, view, model, level_.GetDefaultEnvironmentModel(),
-                                   dt);
+    UniformWrapper uniform_wrapper(projection, view, model, level_.GetDefaultEnvironmentModel(), t);
     // Go through the callback.
     callback_(uniform_wrapper, static_mesh, material);
     program.Use(uniform_wrapper);
@@ -264,7 +269,9 @@ void Renderer::SetDepthTest(bool enable) {
 }
 
 void Renderer::RenderAllMeshes(const glm::mat4& projection, const glm::mat4& view,
-                               double dt /*= 0.0*/) {
+                               double t /*= 0.0*/) {
+    // Keep in memory the time.
+    latest_time_ = t;
     // This will ensure that it is only true once.
     auto first_render = std::exchange(first_render_, false);
     for (const auto& p : level_.GetStaticMeshMaterialIds()) {
@@ -282,15 +289,17 @@ void Renderer::RenderAllMeshes(const glm::mat4& projection, const glm::mat4& vie
                 viewport_     = glm::ivec4(0, 0, size.x / 2, size.y / 2);
                 for (std::uint32_t i = 0; i < 6; ++i) {
                     SetCubeMapTarget(GetTextureFrameFromPosition(i));
-                    RenderNode(p.first, material_id, projection_cubemap, views_cubemap[i], dt);
+                    RenderNode(p.first, material_id, projection_cubemap, views_cubemap[i], t);
                 }
             }
             viewport_ = temp_viewport;
         } else {
             // This should also call clear buffers.
-            RenderNode(p.first, material_id, projection, view, dt);
+            RenderNode(p.first, material_id, projection, view, t);
         }
     }
 }
+
+double Renderer::GetLatestTime() const { return latest_time_; }
 
 }  // End namespace frame::opengl.

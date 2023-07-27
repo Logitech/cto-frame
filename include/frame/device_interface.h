@@ -7,6 +7,7 @@
 #include "frame/buffer_interface.h"
 #include "frame/level_interface.h"
 #include "frame/plugin_interface.h"
+#include "frame/renderer_interface.h"
 #include "frame/texture_interface.h"
 
 namespace frame {
@@ -60,16 +61,21 @@ class DeviceInterface {
      * @param size: The new size of the window.
      */
     virtual void Resize(glm::uvec2 size) = 0;
-	/**
+    /**
      * @brief Get the size of the window.
-	 * @return The size of the window.
-	 */
-    virtual glm::uvec2 GetSize() const   = 0;
+     * @return The size of the window.
+     */
+    virtual glm::uvec2 GetSize() const = 0;
     /**
      * @brief  Get the current level.
      * @return A pointer to the level.
      */
     virtual LevelInterface& GetLevel() = 0;
+    /**
+     * @brief  Get the current renderer (can be nullptr).
+     * @return A pointer to the renderer.
+     */
+    virtual std::unique_ptr<RendererInterface>& GetRenderer() = 0;
     /**
      * @brief Get a device context on the underlying graphic API.
      * @return A device context on the underlying graphic API.
@@ -85,7 +91,7 @@ class DeviceInterface {
      * @param stereo_enum: Set the mode the stereo will use.
      * @param interocular_distance: Distance between the eyes.
      * @param focus_point: Point of focus in the 3D scene (if 0 then they will look in parallel).
-	 * @param invert_left_right: Invert the left and right view.
+     * @param invert_left_right: Invert the left and right view.
      */
     virtual void SetStereo(StereoEnum stereo_enum, float interocular_distance,
                            glm::vec3 focus_point  = glm::vec3(0.0f),

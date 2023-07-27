@@ -105,6 +105,13 @@ class Renderer : public RendererInterface {
      * @param enable: Enable or disable depth test.
      */
     void SetDepthTest(bool enable) override;
+    /**
+     * @brief Get the latest time point for which a rendering was performed (useful for things like
+     * animations).
+     *
+     * @return The latest time point for the renderer.
+     */
+    double GetLatestTime() const override;
 
    private:
     LevelInterface& level_;
@@ -127,6 +134,8 @@ class Renderer : public RendererInterface {
     bool first_render_ = true;
     // The render callback it will be called once per mesh.
     RenderCallback callback_ = [](UniformInterface&, StaticMeshInterface&, MaterialInterface&) {};
+    // Tracks the renderer time.
+    double latest_time_ = 0.;
 };
 
 }  // End namespace frame::opengl.

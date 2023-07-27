@@ -95,6 +95,14 @@ struct RendererInterface {
      * @param callback: The callback to be added to the render.
      */
     virtual void SetMeshRenderCallback(RenderCallback callback) = 0;
+
+    /**
+     * @brief Get the latest time point for which a rendering was performed (useful for things like
+     * animations).
+     *
+     * @return The latest time point for the renderer.
+     */
+    virtual double GetLatestTime() const = 0;
 };
 
 }  // End namespace frame.
